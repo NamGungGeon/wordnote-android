@@ -5,9 +5,9 @@ import android.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 
-class WordManager private constructor(context: Context, onLoaded: Callback?) {
+class WordManager private constructor(var context: Context, var onLoaded: Callback?) {
     companion object {
-        var wordManager: WordManager? = null
+        private var wordManager: WordManager? = null
         fun getInstance(context: Context, onLoaded: Callback?):WordManager{
             if (wordManager == null)
                 wordManager = WordManager(context, onLoaded)
@@ -24,8 +24,6 @@ class WordManager private constructor(context: Context, onLoaded: Callback?) {
     }
 
     private val fileName = "wordlist.txt"
-    var context: Context = context
-    var onLoaded:Callback?= onLoaded
     var wordList: ArrayList<Word> = ArrayList()
 
     init {

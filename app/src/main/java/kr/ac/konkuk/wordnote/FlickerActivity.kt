@@ -9,6 +9,7 @@ import java.util.*
 class FlickerActivity : AppCompatActivity() {
     lateinit var binding:ActivityFlickerBinding
 
+    private var firstFlicker= true
     private val wordList= Stack<Word>()
     lateinit var currentWord:Word
     private var lastClicked:Long= 0
@@ -26,15 +27,16 @@ class FlickerActivity : AppCompatActivity() {
                 originWordListSize= wordList.size
                 wordList.shuffle()
 
-                Toast.makeText(applicationContext, "두번 터치하면 다음 단어로 이동합니다", Toast.LENGTH_SHORT).show()
-                nextWord()
-                binding.root.setOnClickListener{
-                    //next
-                    if(System.currentTimeMillis()- lastClicked< 1000){
-                        lastClicked= 0
-                        nextWord()
-                    }else{
-                        lastClicked= System.currentTimeMillis()
+                runOnUiThread{
+                    nextWord()
+                    binding.root.setOnClickListener{
+                        //next
+                        if(System.currentTimeMillis()- lastClicked< 1000){
+                            lastClicked= 0
+                            nextWord()
+                        }else{
+                            lastClicked= System.currentTimeMillis()
+                        }
                     }
                 }
             }
@@ -49,7 +51,12 @@ class FlickerActivity : AppCompatActivity() {
             return
         }
 
-        Toast.makeText(this, "다음 단어를 표시합니다", Toast.LENGTH_SHORT).show()
+        if(firstFlicker){
+            firstFlicker= false
+            Toast.makeText(applicationContext, "두번 터치하면 다음 단어로 이동합니다", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(this, "다음 단어를 표시합니다", Toast.LENGTH_SHORT).show()
+        }
         currentWord= wordList.pop()
         binding.apply {
             status.text= "${originWordListSize- wordList.size} / ${originWordListSize}"

@@ -2,10 +2,19 @@ package kr.ac.konkuk.wordnote
 
 import java.io.Serializable
 
-data class Word (val word: String, val meaning: String, val tryCnt: Int, val failCnt: Int): Serializable {
+data class Word (var word: String, var meaning: String, var tryCnt: Int, var failCnt: Int): Serializable {
 
     fun getHitRate():Float{
-        return (failCnt.toFloat()/tryCnt.toFloat())
+        if(tryCnt== 0)
+            return 0f
+        return ((tryCnt-failCnt).toFloat()/tryCnt.toFloat())
+    }
+    fun reflectExam(isRight:Boolean){
+        tryCnt++
+        if(!isRight)
+            failCnt++
+
+        WordManager.getInstance()?.saveWordList()
     }
 
     override fun toString(): String {

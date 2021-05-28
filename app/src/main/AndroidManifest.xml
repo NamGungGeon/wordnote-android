@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordnote">
         <activity android:name=".VocaListActivity" />
-        <activity android:name=".AddVocaActivity" />
+        <activity android:name=".VocaAddActivity" />
         <activity android:name=".ExamActivity" />
         <activity android:name=".FlickerActivity" />
         <activity android:name=".SplashActivity">

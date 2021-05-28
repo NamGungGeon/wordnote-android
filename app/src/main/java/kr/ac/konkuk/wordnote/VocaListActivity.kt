@@ -2,7 +2,6 @@ package kr.ac.konkuk.wordnote
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +22,7 @@ class VocaListActivity : AppCompatActivity() {
     private fun init() {
         binding.apply {
             addVocaBtn.setOnClickListener {
-                val intent= Intent(applicationContext, AddVocaActivity::class.java)
+                val intent= Intent(applicationContext, VocaAddActivity::class.java)
                 startActivity(intent)
             }
         }

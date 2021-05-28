@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyExamAnswerRecyclerViewAdapter(
+class ExamAnswerRecyclerViewAdapter(
     private val values: List<String>
-) : RecyclerView.Adapter<MyExamAnswerRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ExamAnswerRecyclerViewAdapter.ViewHolder>() {
 
     interface OnItemSelected {
         fun onSelected(item: String)

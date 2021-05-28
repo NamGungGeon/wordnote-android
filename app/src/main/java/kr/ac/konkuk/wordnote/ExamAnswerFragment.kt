@@ -31,9 +31,9 @@ class ExamAnswerFragment : Fragment() {
                 isNestedScrollingEnabled = false
                 overScrollMode = ScrollView.OVER_SCROLL_NEVER
                 layoutManager = LinearLayoutManager(context)
-                adapter = MyExamAnswerRecyclerViewAdapter(answers)
-                (adapter as MyExamAnswerRecyclerViewAdapter).apply {
-                    onItemSelected = object : MyExamAnswerRecyclerViewAdapter.OnItemSelected {
+                adapter = ExamAnswerRecyclerViewAdapter(answers)
+                (adapter as ExamAnswerRecyclerViewAdapter).apply {
+                    onItemSelected = object : ExamAnswerRecyclerViewAdapter.OnItemSelected {
                         override fun onSelected(item: String) {
                             //right?
                             onAnswerSelected?.onSelected(item == answer.meaning, item, answer)

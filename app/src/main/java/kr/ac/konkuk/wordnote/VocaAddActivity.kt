@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kr.ac.konkuk.wordnote.databinding.ActivityAddVocaBinding
 
-class AddVocaActivity : AppCompatActivity() {
+class VocaAddActivity : AppCompatActivity() {
     lateinit var binding: ActivityAddVocaBinding
     lateinit var vocaFragment: VocaFragment
 
@@ -85,7 +85,7 @@ class AddVocaActivity : AppCompatActivity() {
                 vocaManager.vocaList.add(voca)
 
                 Toast.makeText(
-                    this@AddVocaActivity,
+                    this@VocaAddActivity,
                     "새로운 단어 ${voca.word}가 추가되었습니다",
                     Toast.LENGTH_SHORT
                 ).show()

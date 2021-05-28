@@ -19,6 +19,9 @@ class VocaAddActivity : AppCompatActivity() {
         binding = ActivityAddVocaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.apply {
+            title = "단어 추가"
+        }
         init()
     }
 

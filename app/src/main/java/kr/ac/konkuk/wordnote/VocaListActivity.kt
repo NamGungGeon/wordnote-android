@@ -16,13 +16,21 @@ class VocaListActivity : AppCompatActivity() {
         binding = ActivityVocaListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        supportActionBar?.apply {
+            title= "단어 리스트"
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
         init()
     }
 
     private fun init() {
         binding.apply {
             addVocaBtn.setOnClickListener {
-                val intent= Intent(applicationContext, VocaAddActivity::class.java)
+                val intent = Intent(applicationContext, VocaAddActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -43,7 +51,8 @@ class VocaListActivity : AppCompatActivity() {
                             startActivity(intent)
                         }
 
-                        vocaList.layoutManager = LinearLayoutManager(this@VocaListActivity, RecyclerView.VERTICAL, false)
+                        vocaList.layoutManager =
+                            LinearLayoutManager(this@VocaListActivity, RecyclerView.VERTICAL, false)
                         vocaList.adapter = adapter
 
                         vocaCnt.text= "${vocaManager.vocaList.size}개의 단어가 있습니다"

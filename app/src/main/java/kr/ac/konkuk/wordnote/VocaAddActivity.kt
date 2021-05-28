@@ -37,8 +37,8 @@ class VocaAddActivity : AppCompatActivity() {
                 val wordText = binding.wordInput.text.toString()
                 val meaningText = binding.meaningInput.text.toString()
                 voca = Voca(
-                    wordText.toString().replace("\n", ""),
-                    meaningText.toString().replace("\n", ""),
+                    wordText.replace("\n", ""),
+                    meaningText.replace("\n", ""),
                     0,
                     0
                 )
@@ -48,8 +48,6 @@ class VocaAddActivity : AppCompatActivity() {
                 if (wordText.contains("\n") || meaningText.contains("\n")) {
                     binding.wordInput.setText(wordText.replace("\n", ""))
                     binding.meaningInput.setText(meaningText.replace("\n", ""))
-
-                    addVoca()
                 }
             }
 
@@ -58,17 +56,18 @@ class VocaAddActivity : AppCompatActivity() {
 
         }
         binding.apply {
+            val dummyVoca = Voca("New Word", "단어 뜻", 0, 0)
             wordInput.setText("")
-            wordInput.hint = "New Word"
+            wordInput.hint = dummyVoca.word
             meaningInput.setText("")
-            meaningInput.hint = "단어 뜻"
+            meaningInput.hint = dummyVoca.meaning
 
             wordInput.addTextChangedListener(textWatcher)
             meaningInput.addTextChangedListener(textWatcher)
 
             vocaFragment =
                 supportFragmentManager.findFragmentById(R.id.preview_voca) as VocaFragment
-            vocaFragment.setVoca(Voca("New Word", "단어 뜻", 0, 0))
+            vocaFragment.setVoca(dummyVoca)
 
             addVocaBtn.setOnClickListener { addVoca() }
         }
@@ -82,7 +81,7 @@ class VocaAddActivity : AppCompatActivity() {
 
         VocaManager.getInstance(this, object : VocaManager.Callback {
             override fun onFinishIO(vocaManager: VocaManager) {
-                vocaManager.vocaList.add(voca)
+                vocaManager.vocaList.add(0, voca)
 
                 Toast.makeText(
                     this@VocaAddActivity,

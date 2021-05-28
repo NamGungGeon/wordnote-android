@@ -14,7 +14,6 @@ class ExamActivity : AppCompatActivity() {
     private val wordList = Stack<Voca>()
     lateinit var currentVoca: Voca
     private val fragment = ExamAnswerFragment()
-    private lateinit var vocaManager: VocaManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,27 +24,24 @@ class ExamActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().replace(binding.examAnswerFragment.id, fragment)
             .runOnCommit {
-                VocaManager.getInstance(this, object : VocaManager.Callback {
-                    override fun onFinishIO(vocaManager: VocaManager) {
-                        runOnUiThread {
-                            this@ExamActivity.vocaManager = vocaManager
-                            originWordListSize = vocaManager.vocaList.size
-                            wordList.addAll(vocaManager.vocaList)
-                            wordList.sortWith { o1, o2 -> if (o1.getHitRate() * 100 < o2.getHitRate() * 100) 1 else -1 }
+                VocaManager.useInstance(this) { manager ->
+                    runOnUiThread {
+                        originWordListSize = manager.vocaList.size
+                        wordList.addAll(manager.vocaList)
+                        wordList.sortWith { o1, o2 -> if (o1.getHitRate() * 100 < o2.getHitRate() * 100) 1 else -1 }
 
-                            nextWord()
+                        nextWord(manager)
 
-                            binding.nextBtn.setOnClickListener {
-                                nextWord()
-                            }
+                        binding.nextBtn.setOnClickListener {
+                            nextWord(manager)
                         }
                     }
-                })
+                }
             }.commit()
-
     }
 
-    private fun nextWord() {
+
+    private fun nextWord(manager: VocaManager) {
         if (wordList.isEmpty()) {
             Toast.makeText(this, "더 이상 단어가 없습니다", Toast.LENGTH_LONG).show()
             finish()
@@ -58,7 +54,7 @@ class ExamActivity : AppCompatActivity() {
         binding.status.text = "${originWordListSize - wordList.size} / ${originWordListSize}"
         binding.hitrate.text = "정답률: ${(currentVoca.getHitRate() * 100).toInt()}%"
 
-        val meaningList = vocaManager.getMeaningWithoutDuplicated(currentVoca.meaning)
+        val meaningList = manager.getMeaningWithoutDuplicated(currentVoca.meaning)
 
         val currentMeaningList = ArrayList<String>()
         currentMeaningList.add(currentVoca.meaning)

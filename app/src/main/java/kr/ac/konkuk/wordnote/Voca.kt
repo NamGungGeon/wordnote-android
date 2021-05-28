@@ -21,7 +21,7 @@ data class Voca(var word: String, var meaning: String, var tryCnt: Int = 0, var 
         if (!isRight)
             failCnt++
 
-        VocaManager.getInstance()?.saveWordList()
+        VocaManager.useInstance()?.saveWordList()
     }
 
     override fun toString(): String {

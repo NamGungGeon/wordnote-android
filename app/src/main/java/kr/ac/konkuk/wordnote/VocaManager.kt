@@ -7,10 +7,13 @@ import java.io.PrintWriter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class VocaManager private constructor(var context: Context, var onLoaded: Callback?) {
+class VocaManager private constructor(
+    var context: Context,
+    var onLoaded: (((VocaManager) -> Unit)?)
+) {
     companion object {
         private var vocaManager: VocaManager? = null
-        fun getInstance(context: Context, onLoaded: Callback?): VocaManager {
+        fun useInstance(context: Context, onLoaded: (((VocaManager) -> Unit)?)): VocaManager {
             if (vocaManager == null)
                 vocaManager = VocaManager(context, onLoaded)
             else {
@@ -24,7 +27,7 @@ class VocaManager private constructor(var context: Context, var onLoaded: Callba
             return vocaManager!!
         }
 
-        fun getInstance(): VocaManager? {
+        fun useInstance(): VocaManager? {
             return vocaManager
         }
     }
@@ -37,9 +40,6 @@ class VocaManager private constructor(var context: Context, var onLoaded: Callba
         loadWordList()
     }
 
-    interface Callback {
-        fun onFinishIO(vocaManager: VocaManager)
-    }
 
     fun getMeaningWithoutDuplicated(except: String?): ArrayList<String> {
         val meaning = ArrayList<String>()
@@ -78,7 +78,9 @@ class VocaManager private constructor(var context: Context, var onLoaded: Callba
 
     private fun loadWordList() {
         if (vocaList.isNotEmpty()) {
-            onLoaded?.onFinishIO(this)
+            onLoaded?.run {
+                this(this@VocaManager)
+            }
             onLoaded = null
             return
         }
@@ -93,7 +95,9 @@ class VocaManager private constructor(var context: Context, var onLoaded: Callba
             readFromScanner(scanner)
             scanner.close()
 
-            onLoaded?.onFinishIO(this)
+            onLoaded?.run {
+                this(this@VocaManager)
+            }
             onLoaded = null
         }.start()
     }

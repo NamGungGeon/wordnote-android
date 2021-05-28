@@ -82,17 +82,16 @@ class VocaAddActivity : AppCompatActivity() {
             return
         }
 
-        VocaManager.getInstance(this, object : VocaManager.Callback {
-            override fun onFinishIO(vocaManager: VocaManager) {
-                vocaManager.vocaList.add(0, voca)
+        VocaManager.useInstance(this) { manager ->
 
-                Toast.makeText(
-                    this@VocaAddActivity,
-                    "새로운 단어 ${voca.word}가 추가되었습니다",
-                    Toast.LENGTH_SHORT
-                ).show()
-                init()
-            }
-        })
+            manager.vocaList.add(0, voca)
+
+            Toast.makeText(
+                this@VocaAddActivity,
+                "새로운 단어 ${voca.word}가 추가되었습니다",
+                Toast.LENGTH_SHORT
+            ).show()
+            init()
+        }
     }
 }

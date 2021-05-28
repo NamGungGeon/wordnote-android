@@ -34,7 +34,7 @@ class VocaUpdateActivity : AppCompatActivity() {
 
 
         supportActionBar?.apply {
-            title= voca.word
+            title = voca.word
         }
 
         init()
@@ -92,25 +92,23 @@ class VocaUpdateActivity : AppCompatActivity() {
             return
         }
 
-        VocaManager.getInstance(this, object : VocaManager.Callback {
-            override fun onFinishIO(vocaManager: VocaManager) {
-                for (idx in 0 until vocaManager.vocaList.size - 1) {
-                    val currentVoca = vocaManager.vocaList[idx]
-                    if (currentVoca == originVoca) {
-                        currentVoca.word = voca.word
-                        currentVoca.meaning = voca.meaning
-                        break
-                    }
+        VocaManager.useInstance(this) { manager ->
+            for (idx in 0 until manager.vocaList.size - 1) {
+                val currentVoca = manager.vocaList[idx]
+                if (currentVoca == originVoca) {
+                    currentVoca.word = voca.word
+                    currentVoca.meaning = voca.meaning
+                    break
                 }
-                vocaManager.saveWordList()
-                Toast.makeText(
-                    this@VocaUpdateActivity,
-                    "변경되었습니다",
-                    Toast.LENGTH_SHORT
-                ).show()
-                finish()
             }
-        })
+            manager.saveWordList()
+            Toast.makeText(
+                this@VocaUpdateActivity,
+                "변경되었습니다",
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
+        }
 
 
     }
@@ -119,25 +117,23 @@ class VocaUpdateActivity : AppCompatActivity() {
         AlertDialog.Builder(this).setTitle("단어 삭제")
             .setMessage("${originVoca.word}/${originVoca.meaning}\n위 단어를 삭제합니다. 계속하시겠습니까?\n\n")
             .setPositiveButton("삭제") { dialog, i ->
-                VocaManager.getInstance(this, object : VocaManager.Callback {
-                    override fun onFinishIO(vocaManager: VocaManager) {
-                        val iterator = vocaManager.vocaList.iterator()
-                        while (iterator.hasNext()) {
-                            if (iterator.next() == originVoca) {
-                                iterator.remove()
-                                break
-                            }
+                VocaManager.useInstance(this) { manager ->
+                    val iterator = manager.vocaList.iterator()
+                    while (iterator.hasNext()) {
+                        if (iterator.next() == originVoca) {
+                            iterator.remove()
+                            break
                         }
-                        vocaManager.saveWordList()
-
-                        Toast.makeText(
-                            this@VocaUpdateActivity,
-                            "${originVoca.word}가 삭제되었습니다",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
                     }
-                })
+                    manager.saveWordList()
+
+                    Toast.makeText(
+                        this@VocaUpdateActivity,
+                        "${originVoca.word}가 삭제되었습니다",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
                 dialog.dismiss()
                 finish()
             }

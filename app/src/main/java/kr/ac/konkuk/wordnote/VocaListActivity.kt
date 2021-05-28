@@ -18,7 +18,7 @@ class VocaListActivity : AppCompatActivity() {
 
 
         supportActionBar?.apply {
-            title= "단어 리스트"
+            title = "단어 리스트"
         }
     }
 
@@ -35,30 +35,29 @@ class VocaListActivity : AppCompatActivity() {
             }
         }
 
-        VocaManager.getInstance(this, object : VocaManager.Callback {
-            override fun onFinishIO(vocaManager: VocaManager) {
-                if (isDestroyed)
-                    return
+        VocaManager.useInstance(this) { manager ->
 
-                runOnUiThread {
-                    binding.apply {
-                        val adapter = VocaRecylcerViewAdapter(vocaManager.vocaList)
-                        adapter.onItemSelected = {
-                            //update
-                            val intent =
-                                Intent(this@VocaListActivity, VocaUpdateActivity::class.java)
-                            intent.putExtra("voca", it)
-                            startActivity(intent)
-                        }
+            if (isDestroyed)
+                return@useInstance
 
-                        vocaList.layoutManager =
-                            LinearLayoutManager(this@VocaListActivity, RecyclerView.VERTICAL, false)
-                        vocaList.adapter = adapter
-
-                        vocaCnt.text= "${vocaManager.vocaList.size}개의 단어가 있습니다"
+            runOnUiThread {
+                binding.apply {
+                    val adapter = VocaRecylcerViewAdapter(manager.vocaList)
+                    adapter.onItemSelected = {
+                        //update
+                        val intent =
+                            Intent(this@VocaListActivity, VocaUpdateActivity::class.java)
+                        intent.putExtra("voca", it)
+                        startActivity(intent)
                     }
+
+                    vocaList.layoutManager =
+                        LinearLayoutManager(this@VocaListActivity, RecyclerView.VERTICAL, false)
+                    vocaList.adapter = adapter
+
+                    vocaCnt.text = "${manager.vocaList.size}개의 단어가 있습니다"
                 }
             }
-        })
+        }
     }
 }

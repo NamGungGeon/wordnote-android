@@ -11,7 +11,7 @@ class AddVocaActivity : AppCompatActivity() {
     lateinit var binding: ActivityAddVocaBinding
     lateinit var vocaFragment: VocaFragment
 
-    var word: Word = Word("", "", 0, 0)
+    var voca: Voca = Voca("", "", 0, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class AddVocaActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        word = Word("", "", 0, 0)
+        voca = Voca("", "", 0, 0)
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -36,14 +36,14 @@ class AddVocaActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val wordText = binding.wordInput.text.toString()
                 val meaningText = binding.meaningInput.text.toString()
-                word = Word(
+                voca = Voca(
                     wordText.toString().replace("\n", ""),
                     meaningText.toString().replace("\n", ""),
                     0,
                     0
                 )
 
-                vocaFragment.setVoca(word)
+                vocaFragment.setVoca(voca)
 
                 if (wordText.contains("\n") || meaningText.contains("\n")) {
                     binding.wordInput.setText(wordText.replace("\n", ""))
@@ -68,25 +68,25 @@ class AddVocaActivity : AppCompatActivity() {
 
             vocaFragment =
                 supportFragmentManager.findFragmentById(R.id.preview_voca) as VocaFragment
-            vocaFragment.setVoca(Word("New Word", "단어 뜻", 0, 0))
+            vocaFragment.setVoca(Voca("New Word", "단어 뜻", 0, 0))
 
             addVocaBtn.setOnClickListener { addVoca() }
         }
     }
 
     private fun addVoca() {
-        if (word.word == "" || word.meaning == "") {
+        if (voca.word == "" || voca.meaning == "") {
             Toast.makeText(this, "단어와 뜻을 모두 추가해야 합니다", Toast.LENGTH_SHORT).show()
             return
         }
 
-        WordManager.getInstance(this, object : WordManager.Callback {
-            override fun onFinishIO(wordManager: WordManager) {
-                wordManager.wordList.add(word)
+        VocaManager.getInstance(this, object : VocaManager.Callback {
+            override fun onFinishIO(vocaManager: VocaManager) {
+                vocaManager.vocaList.add(voca)
 
                 Toast.makeText(
                     this@AddVocaActivity,
-                    "새로운 단어 ${word.word}가 추가되었습니다",
+                    "새로운 단어 ${voca.word}가 추가되었습니다",
                     Toast.LENGTH_SHORT
                 ).show()
                 init()

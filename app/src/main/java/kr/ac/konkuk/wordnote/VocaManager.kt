@@ -7,30 +7,30 @@ import java.io.PrintWriter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class WordManager private constructor(var context: Context, var onLoaded: Callback?) {
+class VocaManager private constructor(var context: Context, var onLoaded: Callback?) {
     companion object {
-        private var wordManager: WordManager? = null
-        fun getInstance(context: Context, onLoaded: Callback?): WordManager {
-            if (wordManager == null)
-                wordManager = WordManager(context, onLoaded)
+        private var vocaManager: VocaManager? = null
+        fun getInstance(context: Context, onLoaded: Callback?): VocaManager {
+            if (vocaManager == null)
+                vocaManager = VocaManager(context, onLoaded)
             else {
-                wordManager!!.apply {
+                vocaManager!!.apply {
                     this.context = context
                     this.onLoaded = onLoaded
                     this.loadWordList()
                 }
             }
 
-            return wordManager!!
+            return vocaManager!!
         }
 
-        fun getInstance(): WordManager? {
-            return wordManager
+        fun getInstance(): VocaManager? {
+            return vocaManager
         }
     }
 
     private val fileName = "wordlist.txt"
-    var wordList: ArrayList<Word> = ArrayList()
+    var vocaList: ArrayList<Voca> = ArrayList()
 
     init {
         //fill wordList
@@ -38,12 +38,12 @@ class WordManager private constructor(var context: Context, var onLoaded: Callba
     }
 
     interface Callback {
-        fun onFinishIO(wordManager: WordManager)
+        fun onFinishIO(vocaManager: VocaManager)
     }
 
     fun getMeaningWithoutDuplicated(except: String?): ArrayList<String> {
         val meaning = ArrayList<String>()
-        wordList.map {
+        vocaList.map {
             it.meaning
         }.toList().map {
             if (!meaning.contains(it) && except !== it)
@@ -58,7 +58,7 @@ class WordManager private constructor(var context: Context, var onLoaded: Callba
             val file = context.getFileStreamPath(fileName)
             try {
                 val os = PrintWriter(FileOutputStream(file))
-                wordList.map {
+                vocaList.map {
                     try {
                         os.println(it.word)
                         os.println(it.meaning)
@@ -77,7 +77,7 @@ class WordManager private constructor(var context: Context, var onLoaded: Callba
     }
 
     private fun loadWordList() {
-        if (wordList.isNotEmpty()) {
+        if (vocaList.isNotEmpty()) {
             onLoaded?.onFinishIO(this)
             onLoaded = null
             return
@@ -99,7 +99,7 @@ class WordManager private constructor(var context: Context, var onLoaded: Callba
     }
 
     private fun readFromScanner(scanner: Scanner) {
-        val wordList = ArrayList<Word>()
+        val wordList = ArrayList<Voca>()
         while (scanner.hasNext()) {
             try {
                 val word = scanner.nextLine()
@@ -107,7 +107,7 @@ class WordManager private constructor(var context: Context, var onLoaded: Callba
                 val tryCnt = scanner.nextLine().toInt()
                 val failCnt = scanner.nextLine().toInt()
 
-                val wordInst = Word(word, meaning, tryCnt, failCnt)
+                val wordInst = Voca(word, meaning, tryCnt, failCnt)
                 wordList.add(wordInst)
                 Log.i("word", wordInst.toString())
 
@@ -117,7 +117,7 @@ class WordManager private constructor(var context: Context, var onLoaded: Callba
             }
         }
 
-        this.wordList = wordList
+        this.vocaList = wordList
     }
 
 }

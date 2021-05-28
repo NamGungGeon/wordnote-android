@@ -11,10 +11,10 @@ import kotlin.collections.ArrayList
 class ExamActivity : AppCompatActivity() {
     lateinit var binding: ActivityExamBinding
     var originWordListSize: Int = 0
-    private val wordList = Stack<Word>()
-    lateinit var currentWord: Word
+    private val wordList = Stack<Voca>()
+    lateinit var currentVoca: Voca
     private val fragment = ExamAnswerFragment()
-    private lateinit var wordManager: WordManager
+    private lateinit var vocaManager: VocaManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +25,12 @@ class ExamActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().replace(binding.examAnswerFragment.id, fragment)
             .runOnCommit {
-                WordManager.getInstance(this, object : WordManager.Callback {
-                    override fun onFinishIO(wordManager: WordManager) {
+                VocaManager.getInstance(this, object : VocaManager.Callback {
+                    override fun onFinishIO(vocaManager: VocaManager) {
                         runOnUiThread {
-                            this@ExamActivity.wordManager = wordManager
-                            originWordListSize = wordManager.wordList.size
-                            wordList.addAll(wordManager.wordList)
+                            this@ExamActivity.vocaManager = vocaManager
+                            originWordListSize = vocaManager.vocaList.size
+                            wordList.addAll(vocaManager.vocaList)
                             wordList.sortWith { o1, o2 -> if (o1.getHitRate() * 100 < o2.getHitRate() * 100) 1 else -1 }
 
                             nextWord()
@@ -52,24 +52,24 @@ class ExamActivity : AppCompatActivity() {
             return
         }
 
-        currentWord = wordList.pop()
-        binding.word.text = currentWord.word
+        currentVoca = wordList.pop()
+        binding.word.text = currentVoca.word
         binding.nextBtn.visibility = View.GONE
         binding.status.text = "${originWordListSize - wordList.size} / ${originWordListSize}"
-        binding.hitrate.text = "정답률: ${(currentWord.getHitRate() * 100).toInt()}%"
+        binding.hitrate.text = "정답률: ${(currentVoca.getHitRate() * 100).toInt()}%"
 
-        val meaningList = wordManager.getMeaningWithoutDuplicated(currentWord.meaning)
+        val meaningList = vocaManager.getMeaningWithoutDuplicated(currentVoca.meaning)
 
         val currentMeaningList = ArrayList<String>()
-        currentMeaningList.add(currentWord.meaning)
+        currentMeaningList.add(currentVoca.meaning)
         currentMeaningList.addAll(meaningList.subList(0, 3))
         currentMeaningList.shuffle()
 
-        fragment.init(currentMeaningList, currentWord)
+        fragment.init(currentMeaningList, currentVoca)
         fragment.onAnswerSelected = object : ExamAnswerFragment.OnAnswerSelected {
-            override fun onSelected(result: Boolean, selected: String, answer: Word) {
+            override fun onSelected(result: Boolean, selected: String, answer: Voca) {
                 answer.reflectExam(result)
-                binding.hitrate.text = "정답률: ${(currentWord.getHitRate() * 100).toInt()}%"
+                binding.hitrate.text = "정답률: ${(currentVoca.getHitRate() * 100).toInt()}%"
                 if (result) {
                     Toast.makeText(applicationContext, "정답입니다", Toast.LENGTH_SHORT).show()
                 } else {

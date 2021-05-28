@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 class ExamAnswerFragment : Fragment() {
 
     interface OnAnswerSelected {
-        fun onSelected(result: Boolean, selected: String, answer: Word)
+        fun onSelected(result: Boolean, selected: String, answer: Voca)
     }
 
     var onAnswerSelected: OnAnswerSelected? = null
@@ -24,7 +24,7 @@ class ExamAnswerFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_answer_list, container, false)
     }
 
-    fun init(answers: List<String>, answer: Word) {
+    fun init(answers: List<String>, answer: Voca) {
         if (view is RecyclerView) {
             (view as RecyclerView).apply {
                 view

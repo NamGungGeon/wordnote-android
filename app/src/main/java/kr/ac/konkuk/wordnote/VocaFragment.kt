@@ -16,7 +16,7 @@ class VocaFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_voca, container, false)
     }
 
-    fun setVoca(word: Word) {
+    fun setVoca(voca: Voca) {
         if (view == null)
             return
 
@@ -24,7 +24,7 @@ class VocaFragment : Fragment() {
         val wordView = view.findViewById<TextView>(R.id.word)
         val meanView = view.findViewById<TextView>(R.id.meaning)
 
-        wordView.text = word.word
-        meanView.text = word.meaning
+        wordView.text = voca.word
+        meanView.text = voca.meaning
     }
 }

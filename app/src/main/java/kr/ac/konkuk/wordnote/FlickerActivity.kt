@@ -10,8 +10,8 @@ class FlickerActivity : AppCompatActivity() {
     lateinit var binding:ActivityFlickerBinding
 
     private var firstFlicker= true
-    private val wordList= Stack<Word>()
-    lateinit var currentWord:Word
+    private val wordList= Stack<Voca>()
+    lateinit var currentVoca:Voca
     private var lastClicked:Long= 0
     private var originWordListSize:Int= 0
 
@@ -21,9 +21,9 @@ class FlickerActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        WordManager.getInstance(this, object: WordManager.Callback{
-            override fun onFinishIO(wordManager: WordManager) {
-                wordList.addAll(wordManager.wordList)
+        VocaManager.getInstance(this, object: VocaManager.Callback{
+            override fun onFinishIO(vocaManager: VocaManager) {
+                wordList.addAll(vocaManager.vocaList)
                 originWordListSize= wordList.size
                 wordList.shuffle()
 
@@ -57,11 +57,11 @@ class FlickerActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this, "다음 단어를 표시합니다", Toast.LENGTH_SHORT).show()
         }
-        currentWord= wordList.pop()
+        currentVoca= wordList.pop()
         binding.apply {
             status.text= "${originWordListSize- wordList.size} / ${originWordListSize}"
-            word.text = currentWord.word
-            meaning.text= currentWord.meaning
+            word.text = currentVoca.word
+            meaning.text= currentVoca.meaning
         }
     }
 }

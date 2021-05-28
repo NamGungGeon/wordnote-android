@@ -2,7 +2,7 @@ package kr.ac.konkuk.wordnote
 
 import java.io.Serializable
 
-data class Word (var word: String, var meaning: String, var tryCnt: Int, var failCnt: Int): Serializable {
+data class Voca (var word: String, var meaning: String, var tryCnt: Int, var failCnt: Int): Serializable {
 
     fun getHitRate():Float{
         if(tryCnt== 0)
@@ -14,11 +14,11 @@ data class Word (var word: String, var meaning: String, var tryCnt: Int, var fai
         if(!isRight)
             failCnt++
 
-        WordManager.getInstance()?.saveWordList()
+        VocaManager.getInstance()?.saveWordList()
     }
 
     override fun toString(): String {
-        return "Word(word='$word', meaning='$meaning', tryCnt=$tryCnt, failCnt=$failCnt)"
+        return "Voca(word='$word', meaning='$meaning', tryCnt=$tryCnt, failCnt=$failCnt)"
     }
 
 }

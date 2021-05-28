@@ -18,15 +18,15 @@ class SplashActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         //init wordList
-        WordManager.getInstance(this, object : WordManager.Callback {
-            override fun onFinishIO(wordManager: WordManager) {
+        VocaManager.getInstance(this, object : VocaManager.Callback {
+            override fun onFinishIO(vocaManager: VocaManager) {
                 //loaded!
                 if (isDestroyed)
                     return
 
                 runOnUiThread {
                     binding.apply {
-                        wordManager.wordList.subList(0, 20).map {
+                        vocaManager.vocaList.subList(0, 20).map {
                             TextTagItem(text = it.word)
                         }.toList().let {
                             splashTagView.addTagList(it)

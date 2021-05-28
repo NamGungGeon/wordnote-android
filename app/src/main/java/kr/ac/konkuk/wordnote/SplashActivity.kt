@@ -35,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
                             TextPaint().apply {
                                 isAntiAlias = true
                                 textSize = 30f
-                                color = Color.DKGRAY
+                                color = Color.WHITE
                             }
                         )
 

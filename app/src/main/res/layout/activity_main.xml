@@ -20,5 +20,11 @@
         android:layout_margin="36dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <Button
+        android:text="단어추가"
+        android:id="@+id/goAdd"
+        android:layout_margin="36dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

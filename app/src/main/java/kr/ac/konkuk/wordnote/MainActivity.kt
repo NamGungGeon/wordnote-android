@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
                 val intent= Intent(applicationContext, ExamActivity::class.java)
                 startActivity(intent)
             }
+            goAdd.setOnClickListener{
+                val intent= Intent(applicationContext, AddVocaActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

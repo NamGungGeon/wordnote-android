@@ -15,19 +15,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         binding.apply {
-            goFlicker.setOnClickListener {
+            val menuList= ArrayList<MaterialMenuItemRecyclerView.MaterialMenuItem>()
+            menuList.add(MaterialMenuItemRecyclerView.MaterialMenuItem(R.drawable.ic_baseline_flash_on_24, "단어 외우기", "깜빡이를 이용해 단어를 학습합니다"){
                 val intent = Intent(applicationContext, FlickerActivity::class.java)
                 startActivity(intent)
-            }
-            goExam.setOnClickListener {
+            })
+            menuList.add(MaterialMenuItemRecyclerView.MaterialMenuItem(R.drawable.ic_baseline_bookmarks_24, "단어 시험 보기", "단어가 주어지면 뜻을 맞춰야 합니다"){
                 val intent = Intent(applicationContext, ExamActivity::class.java)
                 startActivity(intent)
-            }
-            goList.setOnClickListener {
+            })
+            menuList.add(MaterialMenuItemRecyclerView.MaterialMenuItem(R.drawable.ic_baseline_menu_book_24, "단어 관리", "등록된 단어를 관리합니다"){
                 val intent = Intent(applicationContext, VocaListActivity::class.java)
                 startActivity(intent)
-            }
+            })
+            val adapter= MaterialMenuItemRecyclerView(menuList)
+            mainMenuListView.adapter=adapter
 
             //시험 결과 (성적표)
             //단어외우기 페이지에서 듣기버튼 추가

@@ -37,8 +37,10 @@ class VocaListActivity : AppCompatActivity() {
                         val adapter = VocaRecylcerViewAdapter(vocaManager.vocaList)
                         adapter.onItemSelected = {
                             //update
-                            val intent = Intent()
+                            val intent =
+                                Intent(this@VocaListActivity, VocaUpdateActivity::class.java)
                             intent.putExtra("voca", it)
+                            startActivity(intent)
                         }
 
                         vocaList.layoutManager = LinearLayoutManager(this@VocaListActivity, RecyclerView.VERTICAL, false)

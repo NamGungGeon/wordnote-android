@@ -29,7 +29,7 @@ class VocaManager private constructor(var context: Context, var onLoaded: Callba
         }
     }
 
-    private val fileName = "wordlist.txt"
+    private val fileName = "vocalist.txt"
     var vocaList: ArrayList<Voca> = ArrayList()
 
     init {

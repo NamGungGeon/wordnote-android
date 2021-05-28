@@ -11,6 +11,7 @@
         android:theme="@style/Theme.Wordnote">
         <activity android:name=".VocaListActivity" />
         <activity android:name=".VocaAddActivity" />
+        <activity android:name=".VocaUpdateActivity" />
         <activity android:name=".ExamActivity" />
         <activity android:name=".FlickerActivity" />
         <activity android:name=".SplashActivity">

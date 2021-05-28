@@ -2,7 +2,7 @@ package kr.ac.konkuk.wordnote
 
 import java.io.Serializable
 
-data class Voca (var word: String, var meaning: String, var tryCnt: Int, var failCnt: Int): Serializable {
+data class Voca (var word: String, var meaning: String, var tryCnt: Int= 0, var failCnt: Int= 0): Serializable {
 
     fun getHitRate():Float{
         if(tryCnt== 0)

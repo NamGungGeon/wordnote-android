@@ -2,7 +2,13 @@ package kr.ac.konkuk.wordnote
 
 import java.io.Serializable
 
-data class Voca(var word: String, var meaning: String, var tryCnt: Int = 0, var failCnt: Int = 0) :
+data class Voca(
+    var word: String,
+    var meaning: String,
+    var tryCnt: Int = 0,
+    var failCnt: Int = 0,
+    var checkCnt: Int = 0
+) :
     Serializable {
     companion object {
         fun copy(voca: Voca): Voca {

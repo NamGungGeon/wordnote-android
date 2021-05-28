@@ -32,7 +32,7 @@ class VocaManager private constructor(
         }
     }
 
-    private val fileName = "vocalist.txt"
+    private val fileName = "vocalist1.txt"
     var vocaList: ArrayList<Voca> = ArrayList()
 
     init {
@@ -53,6 +53,7 @@ class VocaManager private constructor(
         return meaning
     }
 
+    @Synchronized
     fun saveWordList() {
         Thread {
             val file = context.getFileStreamPath(fileName)
@@ -64,6 +65,7 @@ class VocaManager private constructor(
                         os.println(it.meaning)
                         os.println(it.tryCnt)
                         os.println(it.failCnt)
+                        os.println(it.checkCnt)
                         os.println("")
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -76,6 +78,7 @@ class VocaManager private constructor(
         }.start()
     }
 
+    @Synchronized
     private fun loadWordList() {
         if (vocaList.isNotEmpty()) {
             onLoaded?.run {
@@ -110,8 +113,9 @@ class VocaManager private constructor(
                 val meaning = scanner.nextLine()
                 val tryCnt = scanner.nextLine().toInt()
                 val failCnt = scanner.nextLine().toInt()
+                val checkCnt= scanner.nextLine().toInt()
 
-                val wordInst = Voca(word, meaning, tryCnt, failCnt)
+                val wordInst = Voca(word, meaning, tryCnt, failCnt, checkCnt)
                 wordList.add(wordInst)
                 Log.i("word", wordInst.toString())
 

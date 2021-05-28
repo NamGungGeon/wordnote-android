@@ -8,23 +8,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <fragment
+        tools:layout="@layout/fragment_today_voca"
+        android:id="@+id/today_voca_1"
+        android:name="kr.ac.konkuk.wordnote.TodayVocaFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:text="단어외우기"
         android:id="@+id/goFlicker"
-        android:layout_margin="36dp"
+        android:layout_margin="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Button
         android:text="단어시험보기"
         android:id="@+id/goExam"
-        android:layout_margin="36dp"
+        android:layout_margin="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
         android:text="단어 리스트"
         android:id="@+id/goList"
-        android:layout_margin="36dp"
+        android:layout_margin="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

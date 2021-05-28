@@ -17,12 +17,13 @@
             android:orientation="vertical">
 
             <fragment
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="64dp"
                 android:id="@+id/preview_voca"
                 android:name="kr.ac.konkuk.wordnote.VocaFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_voca" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

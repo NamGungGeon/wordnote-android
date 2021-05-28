@@ -45,6 +45,8 @@ class VocaListActivity : AppCompatActivity() {
 
                         vocaList.layoutManager = LinearLayoutManager(this@VocaListActivity, RecyclerView.VERTICAL, false)
                         vocaList.adapter = adapter
+
+                        vocaCnt.text= "${vocaManager.vocaList.size}개의 단어가 있습니다"
                     }
                 }
             }

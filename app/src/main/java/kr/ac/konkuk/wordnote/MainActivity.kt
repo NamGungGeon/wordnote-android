@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
                 val intent= Intent(applicationContext, AddVocaActivity::class.java)
                 startActivity(intent)
             }
+            goList.setOnClickListener{
+                val intent= Intent(applicationContext, VocaListActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

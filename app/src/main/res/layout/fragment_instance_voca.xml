@@ -5,14 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".TodayVocaFragment">
-    <TextView
-        android:layout_margin="0dp"
-        android:paddingBottom="32dp"
-        style="@style/text_strong"
-        android:text="오늘의 단어"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    tools:context=".InstanceVocaFragment">
     <fragment
         android:id="@+id/voca_fragment"
         android:name="kr.ac.konkuk.wordnote.VocaFragment"
@@ -21,6 +14,7 @@
         tools:layout="@layout/fragment_voca" />
 
     <LinearLayout
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
@@ -29,7 +23,6 @@
         <ImageButton
             android:tint="@color/skyblue"
             android:id="@+id/checkBtn"
-            android:padding="8dp"
             android:scaleType="fitXY"
             android:layout_width="48dp"
             android:layout_height="48dp"

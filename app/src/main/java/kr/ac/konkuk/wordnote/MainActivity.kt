@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+        supportActionBar?.title= "워드노트"
 
         binding.apply {
             val menuList= ArrayList<MaterialMenuItemRecyclerView.MaterialMenuItem>()

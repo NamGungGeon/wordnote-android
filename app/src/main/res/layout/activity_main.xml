@@ -9,9 +9,10 @@
     tools:context=".MainActivity">
 
     <fragment
-        tools:layout="@layout/fragment_today_voca"
-        android:id="@+id/today_voca_1"
-        android:name="kr.ac.konkuk.wordnote.TodayVocaFragment"
+        android:layout_marginTop="16dp"
+        tools:layout="@layout/fragment_instance_voca"
+        android:id="@+id/instance_voca_1"
+        android:name="kr.ac.konkuk.wordnote.InstanceVocaFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView

@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <LinearLayout
+        android:layout_weight="1"
         android:paddingTop="64dp"
         android:paddingBottom="64dp"
         android:gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
         <TextView
             android:id="@+id/word"
             android:textStyle="bold"
@@ -40,4 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"/>
     </LinearLayout>
+    <ImageButton
+        android:id="@+id/ttsStartBtn"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_baseline_volume_up_24"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:padding="16dp"/>
 </LinearLayout>

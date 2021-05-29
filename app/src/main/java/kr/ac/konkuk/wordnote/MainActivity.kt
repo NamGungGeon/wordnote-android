@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
             mainMenuListView.adapter=adapter
 
             //시험 결과 (성적표)
-            //단어외우기 페이지에서 듣기버튼 추가
             //듣기평가
         }
     }

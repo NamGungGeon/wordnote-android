@@ -4,25 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:background="?android:attr/selectableItemBackground"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                tools:text="Word"
+                android:id="@+id/word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                tools:text="뜻"
+                android:id="@+id/meaning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
         <TextView
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            tools:text="Word"
-            android:id="@+id/word"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            tools:text="뜻"
-            android:id="@+id/meaning"
-            android:layout_width="match_parent"
+            android:textSize="12dp"
+            android:id="@+id/hitrate"
+            android:layout_gravity="center"
+            tools:text="정답률: 0%"
+            style="@style/text_strong"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
     <View
         android:background="@color/gray_light"
         android:layout_width="match_parent"

@@ -73,6 +73,25 @@ class VocaAddActivity : AppCompatActivity() {
             vocaFragment.setVoca(dummyVoca)
 
             addVocaBtn.setOnClickListener { addVoca() }
+            searchBtn.setOnClickListener {
+                Thread {
+                    voca.loadMeaningFromDict {
+                        runOnUiThread {
+                            if (it) {
+                                //success
+                                meaningInput.setText(voca.meaning)
+                                vocaFragment.setVoca(voca)
+
+                                Toast.makeText(
+                                    this@VocaAddActivity,
+                                    "단어사전에서 검색한 단어의 뜻을 자동으로 입력합니다",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }.start()
+            }
         }
     }
 

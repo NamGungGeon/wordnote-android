@@ -50,13 +50,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <EditText
+                    android:gravity="top"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:lines="1"
                     android:id="@+id/meaningInput"
                     android:hint="사과"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+                <Button
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/searchBtn"
+                    style="@style/button"
+                    android:text="단어 뜻 검색"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -1,5 +1,7 @@
 package kr.ac.konkuk.wordnote
 
+import androidx.annotation.WorkerThread
+import org.jsoup.Jsoup
 import java.io.Serializable
 
 data class Voca(
@@ -28,6 +30,39 @@ data class Voca(
             failCnt++
 
         VocaManager.useInstance()?.saveWordList()
+    }
+
+    @WorkerThread
+    fun loadMeaningFromDict(@WorkerThread callback: ((Boolean) -> Unit)) {
+        if (word == "") {
+            callback(false)
+            return
+        }
+        try {
+            val wordSearchUrl = "https://dic.daum.net/search.do?q=${word}"
+            var crawler = Jsoup.connect(wordSearchUrl).get()
+            val searchedUrl =
+                crawler.select(".card_word .search_cleanword a").first().absUrl("href")
+
+            crawler = Jsoup.connect(searchedUrl).get()
+            val meaningList = crawler.select(".list_mean .txt_mean").map {
+                it.text()
+            }
+
+            var meaning = ""
+            for (idx in meaningList.indices) {
+                meaning += meaningList[idx].trim()
+                if (idx != meaningList.size - 1) {
+                    meaning += ", "
+                }
+            }
+
+            this.meaning = meaning
+            callback(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            callback(false)
+        }
     }
 
     override fun toString(): String {

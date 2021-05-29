@@ -6,14 +6,13 @@
     android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="16dp"
-    android:tint="@color/skyblue_deep"
     android:elevation="4dp"
     android:background="@drawable/ripple_custom"
     android:orientation="horizontal">
 
     <ImageView
         tools:src="@drawable/ic_baseline_add_24"
-        app:tint="@color/skyblue"
+        app:tint="@color/black_like"
         android:id="@+id/menuIcon"
         android:layout_width="64dp"
         android:layout_height="64dp"
@@ -24,7 +23,7 @@
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/skyblue"
+        android:background="@color/black_like"
         android:orientation="vertical"
         android:padding="8dp">
 

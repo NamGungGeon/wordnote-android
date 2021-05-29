@@ -21,7 +21,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:tint="@color/skyblue"
+            android:tint="@color/black_like"
             android:id="@+id/checkBtn"
             android:scaleType="fitXY"
             android:layout_width="48dp"

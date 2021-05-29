@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ExamAnswerFragment : Fragment() {
 
+    private var submitted:Boolean= false
+
     interface OnAnswerSelected {
         fun onSelected(result: Boolean, selected: String, answer: Voca)
     }
@@ -28,6 +30,8 @@ class ExamAnswerFragment : Fragment() {
         if (view is RecyclerView) {
             (view as RecyclerView).apply {
                 view
+                submitted= false
+
                 isNestedScrollingEnabled = false
                 overScrollMode = ScrollView.OVER_SCROLL_NEVER
                 layoutManager = LinearLayoutManager(context)
@@ -36,8 +40,12 @@ class ExamAnswerFragment : Fragment() {
                     onItemSelected = object : ExamAnswerRecyclerViewAdapter.OnItemSelected {
                         override fun onSelected(item: String) {
                             //right?
-                            onAnswerSelected?.onSelected(item == answer.meaning, item, answer)
-                            highlight(answer.meaning)
+                            if(!submitted){
+                                onAnswerSelected?.onSelected(item == answer.meaning, item, answer)
+                                highlight(answer.meaning)
+
+                                submitted= true
+                            }
                         }
                     }
                 }

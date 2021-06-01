@@ -20,7 +20,6 @@ class ExamActivity : AppCompatActivity() {
 
         binding = ActivityExamBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
         supportFragmentManager.beginTransaction().replace(binding.examAnswerFragment.id, fragment)
             .runOnCommit {
@@ -51,7 +50,7 @@ class ExamActivity : AppCompatActivity() {
         currentVoca = wordList.pop()
         binding.word.text = currentVoca.word
         binding.nextBtn.visibility = View.GONE
-        binding.status.text = "${originWordListSize - wordList.size} / ${originWordListSize}"
+        supportActionBar?.title= "단어시험 (${originWordListSize - wordList.size} / ${originWordListSize})"
         binding.hitrate.text = "정답률: ${(currentVoca.getHitRate() * 100).toInt()}%"
 
         val meaningList = manager.getMeaningWithoutDuplicated(currentVoca.meaning)

@@ -5,13 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FlickerActivity">
-    <TextView
-        android:textAlignment="center"
-        android:padding="8dp"
-        tools:text="1 / 30"
-        android:id="@+id/status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_weight="1"
         android:paddingTop="64dp"
@@ -41,13 +34,26 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"/>
     </LinearLayout>
-    <ImageButton
-        android:id="@+id/ttsStartBtn"
-        android:background="?attr/selectableItemBackground"
-        android:src="@drawable/ic_baseline_volume_up_24"
-        android:layout_gravity="center"
-        android:scaleType="fitXY"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:padding="16dp"/>
+    <LinearLayout
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/ttsStartBtn"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_volume_up_24"
+            android:scaleType="fitXY"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:padding="16dp"/>
+        <ImageButton
+            android:id="@+id/nextVocaBtn"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+            android:scaleType="fitXY"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:padding="16dp"/>
+    </LinearLayout>
 </LinearLayout>

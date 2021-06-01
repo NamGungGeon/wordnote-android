@@ -23,7 +23,8 @@ class FlickerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFlickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
+
+        supportActionBar?.title= "단어 외우기"
 
         initTTS()
         VocaManager.useInstance(this) { manager ->
@@ -59,22 +60,26 @@ class FlickerActivity : AppCompatActivity() {
     private fun nextWord() {
         if (vocaList.isEmpty()) {
             //end
-            Toast.makeText(this, "더 이상 단어가 없습니다", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "${originWordListSize}개의 단어를 학습을 완료했습니다!", Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
         if (firstFlicker) {
             firstFlicker = false
-            Toast.makeText(applicationContext, "두번 터치하면 다음 단어로 이동합니다", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "두번 터치하거나 다음 버튼을 누르면 다음 단어로 이동합니다", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "다음 단어를 표시합니다", Toast.LENGTH_SHORT).show()
         }
+
+        supportActionBar?.title= "단어 외우기 (${originWordListSize - vocaList.size} / ${originWordListSize})"
         currentVoca = vocaList.pop()
         binding.apply {
-            status.text = "${originWordListSize - vocaList.size} / ${originWordListSize}"
             word.text = currentVoca.word
             meaning.text = currentVoca.meaning
+            binding.nextVocaBtn.setOnClickListener {
+                nextWord()
+            }
 
             ttsStartBtn.setOnClickListener {
                 if (ttsReady)

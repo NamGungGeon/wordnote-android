@@ -3,7 +3,8 @@ package kr.ac.konkuk.wordnote
 import android.content.Context
 import android.util.Log
 import java.io.FileOutputStream
-import java.io.PrintWriter
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,7 +33,7 @@ class VocaManager private constructor(
         }
     }
 
-    private val fileName = "vocalist1.txt"
+    private val fileName = "vocalist12.txt"
     var vocaList: ArrayList<Voca> = ArrayList()
 
     init {
@@ -40,6 +41,30 @@ class VocaManager private constructor(
         loadWordList()
     }
 
+    fun getVocaBookList(): ArrayList<String> {
+        val books = ArrayList<String>()
+        vocaList.map {
+            it.books?.map { book ->
+                if (!books.contains(book))
+                    books.add(book)
+            }
+        }
+
+        return books
+    }
+    fun removeBook(bookName: String){
+        vocaList.map {
+            if(it.books!= null && it.books!!.contains(bookName)){
+                val currentBooks= it.books!!
+                val iterator= currentBooks.iterator()
+                while(iterator.hasNext()){
+                    if(iterator.next() == bookName)
+                        iterator.remove()
+                }
+            }
+        }
+        saveWordList()
+    }
 
     fun getMeaningWithoutDuplicated(except: String?): ArrayList<String> {
         val meaning = ArrayList<String>()
@@ -58,15 +83,10 @@ class VocaManager private constructor(
         Thread {
             val file = context.getFileStreamPath(fileName)
             try {
-                val os = PrintWriter(FileOutputStream(file))
+                val os = ObjectOutputStream(FileOutputStream(file))
                 vocaList.map {
                     try {
-                        os.println(it.word)
-                        os.println(it.meaning)
-                        os.println(it.tryCnt)
-                        os.println(it.failCnt)
-                        os.println(it.checkCnt)
-                        os.println("")
+                        os.writeObject(vocaList)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -89,20 +109,31 @@ class VocaManager private constructor(
         }
         Thread {
             val file = context.getFileStreamPath(fileName)
-            val scanner: Scanner = if (!file.exists()) {
+            if (!file.exists()) {
                 //not found wordlist.txt file
-                Scanner(context.resources.openRawResource(R.raw.default_word_list))
+                val scanner = Scanner(context.resources.openRawResource(R.raw.default_word_list))
+                readFromScanner(scanner)
+                scanner.close()
             } else {
-                Scanner(context.openFileInput(fileName))
+                readFromObjectFiles(context)
             }
-            readFromScanner(scanner)
-            scanner.close()
 
             onLoaded?.run {
                 this(this@VocaManager)
             }
             onLoaded = null
         }.start()
+    }
+
+    private fun readFromObjectFiles(context: Context) {
+        val file = context.getFileStreamPath(fileName)
+        val inputStream = ObjectInputStream(file.inputStream())
+
+        try {
+            vocaList = inputStream.readObject() as ArrayList<Voca>
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun readFromScanner(scanner: Scanner) {
@@ -113,7 +144,7 @@ class VocaManager private constructor(
                 val meaning = scanner.nextLine()
                 val tryCnt = scanner.nextLine().toInt()
                 val failCnt = scanner.nextLine().toInt()
-                val checkCnt= scanner.nextLine().toInt()
+                val checkCnt = scanner.nextLine().toInt()
 
                 val wordInst = Voca(word, meaning, tryCnt, failCnt, checkCnt)
                 wordList.add(wordInst)

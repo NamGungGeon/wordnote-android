@@ -33,11 +33,16 @@ class VocaRecylcerViewAdapter(
         }
         holder.wordView.text = item.word
         holder.meaingView.text = item.meaning
-        holder.hitRateView.text = "정답률: ${"%.2f".format(item.getHitRate()*100)}%"
-        if(item.getHitRate()>= 0.7){
-            holder.hitRateView.setTextColor(ContextCompat.getColor(context, R.color.right))
+        if(item.tryCnt> 0){
+            holder.hitRateView.text = "정답률: ${"%.2f".format(item.getHitRate()*100)}%"
+            if(item.getHitRate()>= 0.7){
+                holder.hitRateView.setTextColor(ContextCompat.getColor(context, R.color.right))
+            }else{
+                holder.hitRateView.setTextColor(ContextCompat.getColor(context, R.color.wrong))
+            }
         }else{
-            holder.hitRateView.setTextColor(ContextCompat.getColor(context, R.color.wrong))
+            holder.hitRateView.text = "-"
+            holder.hitRateView.setTextColor(ContextCompat.getColor(context, R.color.gray))
         }
     }
 

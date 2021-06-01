@@ -18,6 +18,8 @@ data class Voca(
         }
     }
 
+    var books: ArrayList<String>? = null
+
     fun getHitRate(): Float {
         if (tryCnt == 0)
             return 0f

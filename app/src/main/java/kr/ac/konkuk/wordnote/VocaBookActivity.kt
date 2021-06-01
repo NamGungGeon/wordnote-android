@@ -13,7 +13,6 @@ import kr.ac.konkuk.wordnote.databinding.ActivityVocaBookBinding
 class VocaBookActivity : AppCompatActivity() {
     lateinit var binding: ActivityVocaBookBinding
     val BOOK_ENTIRE = "전체"
-    lateinit var wordList: ArrayList<Voca>
 
     val tabs = ArrayList<TabLayout.Tab>()
     val fragments = ArrayList<VocaListFragment>()
@@ -43,25 +42,11 @@ class VocaBookActivity : AppCompatActivity() {
     }
 
     private fun initTabs(books: ArrayList<String>) {
-        if (fragments.isNotEmpty() && tabs.isNotEmpty()) {
-            var tabIterCnt = 0
-            tabs.map { tab ->
-                val currentPosition = tabIterCnt
-                val fragment = fragments[currentPosition]
-
-                VocaManager.useInstance(this@VocaBookActivity) { manager ->
-                    fragment.setVocaList(
-                        filterVocaAsBook(
-                            tabs[currentPosition].contentDescription!!.toString(),
-                            manager.vocaList
-                        )
-                    )
-                }
-                tabIterCnt++
-            }
-
-            return
+        tabs.map { tab ->
+            binding.booksTabLayout.removeTab(tab)
         }
+        tabs.clear()
+        fragments.clear()
 
         val tab = binding.booksTabLayout.newTab().setText(BOOK_ENTIRE)
         tabs.add(tab)
@@ -79,15 +64,6 @@ class VocaBookActivity : AppCompatActivity() {
             val fragment = VocaListFragment()
             fragments.add(fragment)
 
-            val currentPosition = tabIterCnt
-            VocaManager.useInstance(this@VocaBookActivity) { manager ->
-                fragment.setVocaList(
-                    filterVocaAsBook(
-                        tabs[currentPosition].contentDescription!!.toString(),
-                        manager.vocaList
-                    )
-                )
-            }
             tabIterCnt++
         }
         binding.booksTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -115,15 +91,26 @@ class VocaBookActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-        binding.booksViewPager.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
+        binding.booksViewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager, FragmentStatePagerAdapter.POSITION_NONE) {
             override fun getCount(): Int {
                 return fragments.size
             }
 
             override fun getItem(position: Int): Fragment {
+                val fragment= fragments[position]
+                VocaManager.useInstance(this@VocaBookActivity) { manager ->
+                    fragment.setVocaList(
+                        filterVocaAsBook(
+                            tabs[position].contentDescription!!.toString(),
+                            manager.vocaList
+                        )
+                    )
+                }
                 return fragments[position]
             }
         }
+        binding.booksViewPager.offscreenPageLimit= 0
+        binding.booksViewPager.clearOnPageChangeListeners()
         binding.booksViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
@@ -139,7 +126,6 @@ class VocaBookActivity : AppCompatActivity() {
             override fun onPageScrollStateChanged(state: Int) {
             }
         })
-        binding.booksViewPager.offscreenPageLimit = fragments.size
     }
 
     private fun filterVocaAsBook(bookName: String, vocaList: ArrayList<Voca>): ArrayList<Voca> {

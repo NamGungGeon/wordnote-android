@@ -33,7 +33,7 @@ class VocaManager private constructor(
         }
     }
 
-    private val fileName = "vocalist1345.txt"
+    private val fileName = "vocalist31345.txt"
     var vocaList: ArrayList<Voca> = ArrayList()
     var vocaBookHolder: Voca = Voca.bookHolder()
 
@@ -49,6 +49,23 @@ class VocaManager private constructor(
         }
 
         return books
+    }
+
+    fun updateBookName(bookName: String, newBookName: String) {
+        vocaBookHolder.books.remove(bookName)
+        vocaBookHolder.books.add(newBookName)
+
+        vocaList.map {
+            val bookNameOfCurrentVoca = it.books.find {
+                it == bookName
+            }
+            if (bookNameOfCurrentVoca != null) {
+                it.books.remove(bookNameOfCurrentVoca)
+                it.books.add(newBookName)
+            }
+        }
+
+        saveWordList()
     }
 
     fun removeBook(bookName: String) {
@@ -139,6 +156,7 @@ class VocaManager private constructor(
             }
             if (vocaBookHolder != null) {
                 this.vocaBookHolder = vocaBookHolder
+                vocaList.remove(vocaBookHolder)
             }
 
             this.vocaList = vocaList

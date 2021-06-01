@@ -2,14 +2,11 @@ package kr.ac.konkuk.wordnote
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -49,9 +46,20 @@ class VocaBookActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.menu_create_book-> {
+        when (item.itemId) {
+            R.id.menu_create_book -> {
                 val intent = Intent(this, AddVocaBookActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.menu_update_book -> {
+                if (currentBookName == BOOK_ENTIRE) {
+                    Toast.makeText(this, "이 단어장의 이름은 변경할 수 없습니다", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
+                val intent = Intent(this, UpdateVocaBookActivity::class.java)
+                intent.putExtra(UpdateVocaBookActivity.EXTRA_KEY_BOOK_NAME, currentBookName)
                 startActivity(intent)
                 return true
             }
@@ -118,13 +126,16 @@ class VocaBookActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-        binding.booksViewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager, FragmentStatePagerAdapter.POSITION_NONE) {
+        binding.booksViewPager.adapter = object : FragmentStatePagerAdapter(
+            supportFragmentManager,
+            FragmentStatePagerAdapter.POSITION_NONE
+        ) {
             override fun getCount(): Int {
                 return fragments.size
             }
 
             override fun getItem(position: Int): Fragment {
-                val fragment= fragments[position]
+                val fragment = fragments[position]
                 VocaManager.useInstance(this@VocaBookActivity) { manager ->
                     fragment.setVocaList(
                         filterVocaAsBook(
@@ -136,7 +147,7 @@ class VocaBookActivity : AppCompatActivity() {
                 return fragments[position]
             }
         }
-        binding.booksViewPager.offscreenPageLimit= 0
+        binding.booksViewPager.offscreenPageLimit = 0
         binding.booksViewPager.clearOnPageChangeListeners()
         binding.booksViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(

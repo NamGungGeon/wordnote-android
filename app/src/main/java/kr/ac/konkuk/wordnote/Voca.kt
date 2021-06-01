@@ -13,12 +13,17 @@ data class Voca(
 ) :
     Serializable {
     companion object {
+        val ID_VOCA_HOLDER = "JUST_VOCA_HOLDER"
         fun copy(voca: Voca): Voca {
             return Voca(voca.word, voca.meaning, voca.tryCnt, voca.failCnt)
         }
+
+        fun bookHolder(): Voca {
+            return Voca(ID_VOCA_HOLDER, "NO_NORMAL_VOCA")
+        }
     }
 
-    var books: ArrayList<String>? = null
+    val books: ArrayList<String> = ArrayList()
 
     fun getHitRate(): Float {
         if (tryCnt == 0)
@@ -76,6 +81,8 @@ data class Voca(
         if (javaClass != other?.javaClass) return false
 
         other as Voca
+
+        if (word == ID_VOCA_HOLDER && other.word == ID_VOCA_HOLDER) return true
 
         if (word != other.word) return false
         if (meaning != other.meaning) return false

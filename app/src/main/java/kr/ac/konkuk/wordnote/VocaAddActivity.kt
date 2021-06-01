@@ -8,6 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import kr.ac.konkuk.wordnote.databinding.ActivityAddVocaBinding
 
 class VocaAddActivity : AppCompatActivity() {
+
+    companion object {
+        val EXTRA_KEY_BOOKNAME = "bookname"
+    }
+
     lateinit var binding: ActivityAddVocaBinding
     lateinit var vocaFragment: VocaFragment
 

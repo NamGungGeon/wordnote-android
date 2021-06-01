@@ -33,8 +33,9 @@ class VocaManager private constructor(
         }
     }
 
-    private val fileName = "vocalist12.txt"
+    private val fileName = "vocalist1345.txt"
     var vocaList: ArrayList<Voca> = ArrayList()
+    var vocaBookHolder: Voca = Voca.bookHolder()
 
     init {
         //fill wordList
@@ -43,27 +44,25 @@ class VocaManager private constructor(
 
     fun getVocaBookList(): ArrayList<String> {
         val books = ArrayList<String>()
-        vocaList.map {
-            it.books?.map { book ->
-                if (!books.contains(book))
-                    books.add(book)
-            }
+        vocaBookHolder?.books.map {
+            books.add(it)
         }
 
         return books
     }
-    fun removeBook(bookName: String){
-        vocaList.map {
-            if(it.books!= null && it.books!!.contains(bookName)){
-                val currentBooks= it.books!!
-                val iterator= currentBooks.iterator()
-                while(iterator.hasNext()){
-                    if(iterator.next() == bookName)
-                        iterator.remove()
-                }
-            }
-        }
+
+    fun removeBook(bookName: String) {
+        vocaBookHolder.books.remove(bookName)
         saveWordList()
+    }
+
+    private fun finishUse() {
+        onLoaded?.run {
+            this(this@VocaManager)
+            saveWordList()
+
+            onLoaded = null
+        }
     }
 
     fun getMeaningWithoutDuplicated(except: String?): ArrayList<String> {
@@ -84,9 +83,11 @@ class VocaManager private constructor(
             val file = context.getFileStreamPath(fileName)
             try {
                 val os = ObjectOutputStream(FileOutputStream(file))
+                val targetObject = ArrayList<Voca>(vocaList)
+                targetObject.add(vocaBookHolder)
                 vocaList.map {
                     try {
-                        os.writeObject(vocaList)
+                        os.writeObject(targetObject)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -103,8 +104,9 @@ class VocaManager private constructor(
         if (vocaList.isNotEmpty()) {
             onLoaded?.run {
                 this(this@VocaManager)
+
+                onLoaded = null
             }
-            onLoaded = null
             return
         }
         Thread {
@@ -120,8 +122,9 @@ class VocaManager private constructor(
 
             onLoaded?.run {
                 this(this@VocaManager)
+
+                onLoaded = null
             }
-            onLoaded = null
         }.start()
     }
 
@@ -130,7 +133,15 @@ class VocaManager private constructor(
         val inputStream = ObjectInputStream(file.inputStream())
 
         try {
-            vocaList = inputStream.readObject() as ArrayList<Voca>
+            val vocaList = inputStream.readObject() as ArrayList<Voca>
+            val vocaBookHolder = vocaList.find {
+                it == Voca.bookHolder()
+            }
+            if (vocaBookHolder != null) {
+                this.vocaBookHolder = vocaBookHolder
+            }
+
+            this.vocaList = vocaList
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -1,11 +1,16 @@
 package kr.ac.konkuk.wordnote
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import kr.ac.konkuk.wordnote.databinding.ActivityVocaBookBinding
@@ -25,6 +30,15 @@ class VocaBookActivity : AppCompatActivity() {
         binding = ActivityVocaBookBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.title = "단어장 관리"
+
+        binding.addVocaBtn.setOnClickListener {
+            val intent = Intent(this, VocaAddActivity::class.java)
+            if (currentBookName != BOOK_ENTIRE) {
+                intent.putExtra(VocaAddActivity.EXTRA_KEY_BOOKNAME, currentBookName)
+            }
+
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -33,11 +47,24 @@ class VocaBookActivity : AppCompatActivity() {
         return true
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menu_create_book-> {
+                val intent = Intent(this, AddVocaBookActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onResume() {
         super.onResume()
 
         VocaManager.useInstance(this) { manager ->
-            initTabs(arrayListOf("토익", "토플"))
+            initTabs(manager.getVocaBookList())
         }
     }
 
@@ -133,7 +160,7 @@ class VocaBookActivity : AppCompatActivity() {
             return vocaList
 
         return ArrayList(vocaList.filter {
-            it.books != null && it.books!!.contains(bookName)
+            it.books.contains(bookName)
         }.toList())
     }
 }

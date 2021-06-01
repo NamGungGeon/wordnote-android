@@ -27,6 +27,10 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, ExamActivity::class.java)
                 startActivity(intent)
             })
+            menuList.add(MaterialMenuItemRecyclerView.MaterialMenuItem(R.drawable.ic_baseline_volume_up_24, "단어 시험 보기 (듣기)", "단어의 발음을 듣고 뜻을 맞춰야 합니다"){
+                val intent = Intent(applicationContext, ExamListenRequireMeaningActivity::class.java)
+                startActivity(intent)
+            })
             menuList.add(MaterialMenuItemRecyclerView.MaterialMenuItem(R.drawable.ic_baseline_menu_book_24, "단어 관리", "등록된 단어를 관리합니다"){
                 val intent = Intent(applicationContext, VocaListActivity::class.java)
                 startActivity(intent)

@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.google.android.material.tabs.TabLayout
+            android:layout_gravity="left"
+            app:tabMode="scrollable"
             app:tabTextColor="@color/gray"
             app:tabSelectedTextColor="@color/black_like"
             android:id="@+id/booksTabLayout"

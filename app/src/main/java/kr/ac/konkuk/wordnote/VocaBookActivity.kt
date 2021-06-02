@@ -185,7 +185,7 @@ class VocaBookActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_create_book -> {
-                val intent = Intent(this, AddVocaBookActivity::class.java)
+                val intent = Intent(this, VocaBookAddActivity::class.java)
                 startActivity(intent)
                 return true
             }

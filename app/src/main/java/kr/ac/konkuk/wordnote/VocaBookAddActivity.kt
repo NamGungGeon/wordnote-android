@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kr.ac.konkuk.wordnote.databinding.ActivityAddVocaBookBinding
 
-class AddVocaBookActivity : AppCompatActivity() {
+class VocaBookAddActivity : AppCompatActivity() {
     lateinit var binding: ActivityAddVocaBookBinding
     var newBookName: String? = null
 
@@ -25,7 +25,7 @@ class AddVocaBookActivity : AppCompatActivity() {
             VocaManager.useInstance(this) { manager ->
                 if (manager.getVocaBookList().contains(newBookName)) {
                     Toast.makeText(
-                        this@AddVocaBookActivity,
+                        this@VocaBookAddActivity,
                         "이미 동일한 이름의 단어장이 존재합니다",
                         Toast.LENGTH_SHORT
                     ).show()

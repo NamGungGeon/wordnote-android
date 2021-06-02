@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kr.ac.konkuk.wordnote.databinding.ActivityAddVocaBinding
@@ -29,6 +30,13 @@ class VocaAddActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             title = "단어 추가"
+        }
+
+
+        val bookName = intent.getStringExtra(EXTRA_KEY_BOOKNAME)
+        if (bookName != null) {
+            binding.msgView.text = "이 단어는 단어장(${bookName})에 저장됩니다"
+            binding.msgView.visibility = View.VISIBLE
         }
         init()
     }

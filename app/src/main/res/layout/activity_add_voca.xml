@@ -2,84 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".VocaAddActivity">
+
     <ScrollView
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/msgView"
+                style="@style/text_explain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="메시지"
+                android:textAlignment="center"
+                android:textColor="@color/alert"
+                android:visibility="gone" />
+
             <fragment
+                android:id="@+id/preview_voca"
+                android:name="kr.ac.konkuk.wordnote.VocaFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="64dp"
-                tools:layout="@layout/fragment_voca"
-                android:name="kr.ac.konkuk.wordnote.VocaFragment"
-                android:id="@+id/preview_voca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                tools:layout="@layout/fragment_voca" />
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:text="새로운 단어"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:text="새로운 단어" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
                     <EditText
-                        android:layout_weight="1"
+                        android:id="@+id/wordInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:lines="1"
-                        android:id="@+id/wordInput"
+                        android:layout_weight="1"
                         android:hint="apple"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
+                        android:lines="1" />
+
                     <ImageButton
-                        android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/ic_baseline_search_24"
                         android:id="@+id/searchBtn"
+                        style="@style/button_icon"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:layout_margin="0dp"
-                        style="@style/button_icon"/>
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_search_24" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="32dp"/>
+                    android:layout_height="32dp" />
+
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:text="새로운 단어의 뜻"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:text="새로운 단어의 뜻" />
+
                 <EditText
-                    android:gravity="top"
+                    android:id="@+id/meaningInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:id="@+id/meaningInput"
-                    android:hint="사과"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:gravity="top"
+                    android:hint="사과" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
     <Button
-        android:elevation="8dp"
-        style="@style/button"
         android:id="@+id/addVocaBtn"
-        android:text="단어 추가"
+        style="@style/button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:text="단어 추가" />
 </LinearLayout>

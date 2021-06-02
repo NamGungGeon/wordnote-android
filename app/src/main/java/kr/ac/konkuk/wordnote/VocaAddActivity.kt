@@ -1,5 +1,7 @@
 package kr.ac.konkuk.wordnote
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -107,15 +109,30 @@ class VocaAddActivity : AppCompatActivity() {
         }
 
         VocaManager.useInstance(this) { manager ->
-
+            val bookName = intent.getStringExtra(EXTRA_KEY_BOOKNAME)
+            if (bookName != null)
+                voca.books.add(bookName)
             manager.vocaList.add(0, voca)
+
+            var toastMsg =
+                if (bookName == null) "새로운 단어 ${voca.word}가 추가되었습니다" else "새로운 단어 ${voca.word}가 단어장 ${bookName}에 추가되었습니다"
 
             Toast.makeText(
                 this@VocaAddActivity,
-                "새로운 단어 ${voca.word}가 추가되었습니다",
+                toastMsg,
                 Toast.LENGTH_SHORT
             ).show()
+
             init()
         }
+    }
+
+    override fun onBackPressed() {
+        val bookName = intent.getStringExtra(EXTRA_KEY_BOOKNAME)
+        val resultIntent = Intent()
+        if (bookName != null)
+            resultIntent.putExtra(VocaBookActivity.EXTRA_KEY_TAB_SELECTOR, bookName)
+        setResult(Activity.RESULT_OK, resultIntent)
+        super.onBackPressed()
     }
 }

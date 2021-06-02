@@ -18,6 +18,10 @@ import com.google.android.material.tabs.TabLayout
 import kr.ac.konkuk.wordnote.databinding.ActivityVocaBookBinding
 
 class VocaBookActivity : AppCompatActivity() {
+    companion object {
+        val EXTRA_KEY_TAB_SELECTOR = "KEY_TAB_SELECTOR"
+    }
+
     lateinit var binding: ActivityVocaBookBinding
     val BOOK_ENTIRE = "전체"
 
@@ -53,6 +57,13 @@ class VocaBookActivity : AppCompatActivity() {
             binding.customActionBtn.text = ""
             binding.customActionBtn.visibility = View.GONE
             binding.addVocaBtn.setOnClickListener {
+                if (currentBookName != BOOK_ENTIRE) {
+                    val intent = Intent(this@VocaBookActivity, VocaAddActivity::class.java)
+                    intent.putExtra(VocaAddActivity.EXTRA_KEY_BOOKNAME, currentBookName)
+                    startActivityForResult(intent, 0)
+                    return@setOnClickListener
+                }
+
                 if (mode != VocaRecylcerViewAdapter.MODE_CHECK) {
                     mode = VocaRecylcerViewAdapter.MODE_CHECK
                     val entireBookFragment = fragments[0]
@@ -84,27 +95,26 @@ class VocaBookActivity : AppCompatActivity() {
                     binding.customActionBtn.visibility = View.VISIBLE
                     binding.customActionBtn.text = "새 단어 추가"
                     binding.customActionBtn.setOnClickListener {
-                        val openVocaAddActivity= {
+                        val openVocaAddActivity = {
                             val intent = Intent(this, VocaAddActivity::class.java)
                             if (currentBookName != BOOK_ENTIRE) {
                                 intent.putExtra(VocaAddActivity.EXTRA_KEY_BOOKNAME, currentBookName)
                             }
                             startActivity(intent)
                         }
-                        if(selectedVocaLost.isNotEmpty()){
+                        if (selectedVocaLost.isNotEmpty()) {
                             AlertDialog.Builder(this)
                                 .setTitle("페이지 이동")
                                 .setMessage("선택한 단어가 있습니다\n\n페이지를 벗어나면 선택된 단어 정보가 사라집니다. 계속하시겠습니까?")
-                                .setPositiveButton("이동"){dialog, i->
+                                .setPositiveButton("이동") { dialog, i ->
                                     openVocaAddActivity()
                                     dialog.dismiss()
-                                }.setNegativeButton("취소"){dialog, i->
+                                }.setNegativeButton("취소") { dialog, i ->
                                     dialog.dismiss()
                                 }.create().show()
-                        }else{
+                        } else {
                             openVocaAddActivity()
                         }
-
                     }
 
                     return@setOnClickListener
@@ -215,6 +225,7 @@ class VocaBookActivity : AppCompatActivity() {
     }
 
     private fun initTabs(books: ArrayList<String>) {
+        binding.booksTabLayout.clearOnTabSelectedListeners()
         tabs.map { tab ->
             binding.booksTabLayout.removeTab(tab)
         }
@@ -222,6 +233,7 @@ class VocaBookActivity : AppCompatActivity() {
         fragments.clear()
 
         val tab = binding.booksTabLayout.newTab().setText(BOOK_ENTIRE)
+        tab.contentDescription = BOOK_ENTIRE
         tabs.add(tab)
 
         books.map { book ->
@@ -239,22 +251,21 @@ class VocaBookActivity : AppCompatActivity() {
 
             tabIterCnt++
         }
+        var tabIdx = -1
+        for (idx in 0..tabs.size) {
+            if (tabs[idx].contentDescription?.toString() == currentBookName) {
+                tabIdx = idx
+                break
+            }
+        }
+        if (tabIdx != -1) {
+            binding.booksViewPager.currentItem = tabIdx
+        }
         binding.booksTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.apply {
                     if (tab.contentDescription != null)
-                        currentBookName = tab.contentDescription.toString()
-                }
-
-                var tabIdx = -1
-                for (idx in 0..tabs.size) {
-                    if (tabs[idx] == tab) {
-                        tabIdx = idx
-                        break
-                    }
-                }
-                if (tabIdx != -1) {
-                    binding.booksViewPager.currentItem = tabIdx
+                        currentBookName = tab.contentDescription!!.toString()
                 }
             }
 
@@ -278,12 +289,12 @@ class VocaBookActivity : AppCompatActivity() {
                 VocaManager.useInstance(this@VocaBookActivity) { manager ->
                     fragment.setVocaList(
                         filterVocaAsBook(
-                            tabs[position].contentDescription!!.toString(),
+                            binding.booksTabLayout.getTabAt(position)!!.contentDescription!!.toString(),
                             manager.vocaList
                         )
                     )
                 }
-                return fragments[position]
+                return fragment
             }
         }
         binding.booksViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -312,16 +323,25 @@ class VocaBookActivity : AppCompatActivity() {
         }.toList())
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val targetBookName = data?.getStringExtra(EXTRA_KEY_TAB_SELECTOR)
+        if (targetBookName != null) {
+            currentBookName = targetBookName
+        }
+    }
+
     override fun onBackPressed() {
         if (mode != null) {
-            if(selectedVocaLost.isNotEmpty()){
+            if (selectedVocaLost.isNotEmpty()) {
                 AlertDialog.Builder(this)
                     .setTitle("단어 선택 모드 종료")
                     .setMessage("${selectedVocaLost.size}개의 선택한 단어가 있습니다\n\n저장하지 않고 돌아가시겠습니까?")
-                    .setPositiveButton("종료"){dialog, i->
+                    .setPositiveButton("종료") { dialog, i ->
                         init()
                         dialog.dismiss()
-                    }.setNegativeButton("취소"){dialog, i->
+                    }.setNegativeButton("취소") { dialog, i ->
                         dialog.dismiss()
                     }.create().show()
                 return

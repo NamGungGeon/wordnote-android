@@ -2,8 +2,10 @@ package kr.ac.konkuk.wordnote
 
 import android.content.Context
 import android.os.Looper
+import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.io.OutputStream
 import java.lang.Exception
 
 class MyHistoryManager private constructor(val context: Context) {
@@ -48,7 +50,7 @@ class MyHistoryManager private constructor(val context: Context) {
     private fun save() {
         Thread {
             val outputStream =
-                ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE))
+                ObjectOutputStream(FileOutputStream(context.getFileStreamPath(fileName)))
             try {
                 outputStream.writeObject(historyList)
             } catch (e: Exception) {

@@ -25,7 +25,8 @@ class MyHistoryRecyclerViewAdapter(
         val item = values[position]
         holder.nameView.text = item.name
         holder.explainView.text = item.explain
-        holder.moreInfoView.text = item.moreInfo
+        if (item.getDateString() != null)
+            holder.moreInfoView.text = item.getDateString()
     }
 
     override fun getItemCount(): Int = values.size

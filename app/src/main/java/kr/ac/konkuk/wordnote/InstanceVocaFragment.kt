@@ -44,6 +44,16 @@ class InstanceVocaFragment : Fragment() {
                     }
                     if (foundVoca != null) {
                         foundVoca.checkCnt++
+
+                        MyHistoryManager.useInstance(context!!) { manager ->
+                            manager.historyList.add(
+                                0,
+                                MyHistory(
+                                    MyHistory.NAME_INSTANCE_VOCA,
+                                    "${foundVoca.word}/${foundVoca.meaning}"
+                                )
+                            )
+                        }
                     }
                     manager.saveWordList()
                     Toast.makeText(context!!, "잘했어요!", Toast.LENGTH_SHORT).show()

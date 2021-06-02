@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kr.ac.konkuk.wordnote.databinding.ActivityFlickerBinding
 import java.util.*
@@ -24,7 +25,7 @@ class FlickerActivity : AppCompatActivity() {
         binding = ActivityFlickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title= "단어 외우기"
+        supportActionBar?.title = "단어 외우기"
 
         initTTS()
         VocaManager.useInstance(this) { manager ->
@@ -60,19 +61,40 @@ class FlickerActivity : AppCompatActivity() {
     private fun nextWord() {
         if (vocaList.isEmpty()) {
             //end
-            Toast.makeText(this, "${originWordListSize}개의 단어를 학습을 완료했습니다!", Toast.LENGTH_LONG).show()
-            finish()
+            val msg =
+                "${originWordListSize}개에 대한 학습을 완료했습니다"
+
+            MyHistoryManager.useInstance(this) { manager ->
+                manager.historyList.add(
+                    0,
+                    MyHistory(
+                        MyHistory.NAME_FLIKER_VOCA,
+                        msg
+                    )
+                )
+            }
+            AlertDialog.Builder(this).setTitle("끝났습니다!")
+                .setMessage(msg)
+                .setPositiveButton("닫기") { dialog, i ->
+                    dialog.dismiss()
+                    finish()
+                }.setCancelable(false).create().show()
             return
         }
 
         if (firstFlicker) {
             firstFlicker = false
-            Toast.makeText(applicationContext, "두번 터치하거나 다음 버튼을 누르면 다음 단어로 이동합니다", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                applicationContext,
+                "두번 터치하거나 다음 버튼을 누르면 다음 단어로 이동합니다",
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             Toast.makeText(this, "다음 단어를 표시합니다", Toast.LENGTH_SHORT).show()
         }
 
-        supportActionBar?.title= "단어 외우기 (${originWordListSize - vocaList.size} / ${originWordListSize})"
+        supportActionBar?.title =
+            "단어 외우기 (${originWordListSize - vocaList.size} / ${originWordListSize})"
         currentVoca = vocaList.pop()
         binding.apply {
             word.text = currentVoca.word

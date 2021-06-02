@@ -25,25 +25,29 @@ class SplashActivity : AppCompatActivity() {
                 return@useInstance
 
             runOnUiThread {
-                binding.apply {
-                    manager.vocaList.subList(0, 20).map {
-                        TextTagItem(text = it.word)
-                    }.toList().let {
-                        splashTagView.addTagList(it)
-                    }
-                    splashTagView.setTextPaint(
-                        TextPaint().apply {
-                            isAntiAlias = true
-                            textSize = 30f
-                            color = Color.WHITE
+                if (manager.vocaList.isNotEmpty())
+                    binding.apply {
+                        manager.vocaList.subList(
+                            0,
+                            if (manager.vocaList.size > 20) 20 else manager.vocaList.size
+                        ).map {
+                            TextTagItem(text = it.word)
+                        }.toList().let {
+                            splashTagView.addTagList(it)
                         }
-                    )
+                        splashTagView.setTextPaint(
+                            TextPaint().apply {
+                                isAntiAlias = true
+                                textSize = 30f
+                                color = Color.WHITE
+                            }
+                        )
 
-                    splashTagView.setRadius(3f)
-                    splashTagView.requestLayout()
-                    splashTagView.rotateOnTouch(false)
-                    splashTagView.startAutoRotation(5f, 5f)
-                }
+                        splashTagView.setRadius(3f)
+                        splashTagView.requestLayout()
+                        splashTagView.rotateOnTouch(false)
+                        splashTagView.startAutoRotation(5f, 5f)
+                    }
             }
 
             if (!isDestroyed)

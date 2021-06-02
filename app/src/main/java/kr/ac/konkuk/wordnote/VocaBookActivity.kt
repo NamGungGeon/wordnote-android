@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -61,6 +62,30 @@ class VocaBookActivity : AppCompatActivity() {
                 val intent = Intent(this, UpdateVocaBookActivity::class.java)
                 intent.putExtra(UpdateVocaBookActivity.EXTRA_KEY_BOOK_NAME, currentBookName)
                 startActivity(intent)
+                return true
+            }
+            R.id.menu_remove_book -> {
+                if (currentBookName == BOOK_ENTIRE) {
+                    Toast.makeText(this, "이 단어장은 삭제할 수 없습니다", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                AlertDialog.Builder(this)
+                    .setTitle("단어장(${currentBookName}) 삭제")
+                    .setMessage("해당 단어장을 삭제합니다\n단어장에 등록된 단어들은 이 단어장과 연결이 해제됩니다")
+                    .setPositiveButton("삭제") { dialog, i ->
+                        VocaManager.useInstance(this){manager->
+                            manager.removeBook(currentBookName)
+                            currentBookName= BOOK_ENTIRE
+                            Toast.makeText(this, "삭제되었습니다", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+
+
+                            initTabs(manager.getVocaBookList())
+                        }
+                    }
+                    .setNegativeButton("닫기") { dialog, i ->
+                        dialog.dismiss()
+                    }.create().show()
                 return true
             }
         }

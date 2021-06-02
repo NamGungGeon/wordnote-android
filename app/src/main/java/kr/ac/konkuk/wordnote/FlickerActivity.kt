@@ -8,8 +8,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kr.ac.konkuk.wordnote.databinding.ActivityFlickerBinding
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FlickerActivity : AppCompatActivity() {
+    companion object {
+        val KEY_NAME_BOOK_NAME = "BOOK_NAME"
+        val KEY_NAME_VOCA_CNT = "VOCA_CNT"
+    }
+
     lateinit var binding: ActivityFlickerBinding
 
     private var firstFlicker = true
@@ -27,13 +33,33 @@ class FlickerActivity : AppCompatActivity() {
 
         supportActionBar?.title = "단어 외우기"
 
+        val bookName = intent.getStringExtra(KEY_NAME_BOOK_NAME)
+        val vocaCnt = intent.getIntExtra(KEY_NAME_VOCA_CNT, 5)
+
+        if (bookName == null) {
+            Toast.makeText(this, "단어장 이름이 없습니다", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
         initTTS()
         VocaManager.useInstance(this) { manager ->
-            vocaList.addAll(manager.vocaList)
-            originWordListSize = vocaList.size
-            vocaList.shuffle()
-
             runOnUiThread {
+                if (manager.getVocaList(bookName).size < vocaCnt) {
+                    Toast.makeText(
+                        this@FlickerActivity,
+                        "단어장의 단어 수가 선택한 단어 갯수 ${vocaCnt}개 보다 작습니다",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                    return@runOnUiThread
+                }
+                val vocaList = ArrayList(manager.vocaList)
+                vocaList.shuffle()
+                this.vocaList.addAll(vocaList.subList(0, vocaCnt))
+
+                originWordListSize = this.vocaList.size
+
                 nextWord()
                 binding.root.setOnClickListener {
                     //next

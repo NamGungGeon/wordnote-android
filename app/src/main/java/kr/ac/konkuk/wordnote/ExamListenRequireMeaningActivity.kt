@@ -11,9 +11,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ExamListenRequireMeaningActivity : AppCompatActivity() {
+    companion object {
+        val KEY_NAME_BOOK_NAME = "BOOK_NAME"
+        val KEY_NAME_VOCA_CNT = "VOCA_CNT"
+    }
+
     lateinit var binding: ActivityExamListenRequireMeaningBinding
     var originWordListSize: Int = 0
-    private val wordList = Stack<Voca>()
+    private val vocaList = Stack<Voca>()
     lateinit var currentVoca: Voca
     private val fragment = ExamAnswerFragment()
 
@@ -29,14 +34,36 @@ class ExamListenRequireMeaningActivity : AppCompatActivity() {
         binding = ActivityExamListenRequireMeaningBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val bookName = intent.getStringExtra(FlickerActivity.KEY_NAME_BOOK_NAME)
+        val vocaCnt = intent.getIntExtra(FlickerActivity.KEY_NAME_VOCA_CNT, 5)
+
+        if (bookName == null) {
+            Toast.makeText(this, "단어장 이름이 없습니다", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
         initTTS()
+
         supportFragmentManager.beginTransaction().replace(binding.examAnswerFragment.id, fragment)
             .runOnCommit {
                 VocaManager.useInstance(this) { manager ->
                     runOnUiThread {
-                        originWordListSize = manager.vocaList.size
-                        wordList.addAll(manager.vocaList)
-                        wordList.sortWith { o1, o2 -> if (o1.getHitRate() * 100 < o2.getHitRate() * 100) 1 else -1 }
+                        if (manager.getVocaList(bookName).size < vocaCnt) {
+                            Toast.makeText(
+                                this@ExamListenRequireMeaningActivity,
+                                "단어장의 단어 수가 선택한 단어 갯수 ${vocaCnt}개 보다 작습니다",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                            return@runOnUiThread
+                        }
+                        val vocaList = ArrayList(manager.vocaList)
+                        vocaList.shuffle()
+                        this.vocaList.addAll(vocaList.subList(0, vocaCnt))
+                        this.vocaList.sortWith { o1, o2 -> if (o1.getHitRate() < o2.getHitRate()) 1 else -1 }
+
+                        originWordListSize = this.vocaList.size
 
                         nextWord(manager)
 
@@ -60,15 +87,14 @@ class ExamListenRequireMeaningActivity : AppCompatActivity() {
     }
 
     private fun nextWord(manager: VocaManager) {
-        if (wordList.isEmpty()) {
-
+        if (vocaList.isEmpty()) {
             val msg =
                 "${rightCnt + wrongCnt}개 중 ${rightCnt}개를 맞췄습니다\n정답률: ${
                     String.format(
-                        ".2f",
-                        rightCnt / (wrongCnt + rightCnt) * 100
+                        "%.2f",
+                        (rightCnt.toFloat() / (wrongCnt + rightCnt).toFloat() * 100)
                     )
-                }"
+                }%"
 
             MyHistoryManager.useInstance(this) { manager ->
                 manager.historyList.add(
@@ -89,7 +115,7 @@ class ExamListenRequireMeaningActivity : AppCompatActivity() {
             return
         }
 
-        currentVoca = wordList.pop()
+        currentVoca = vocaList.pop()
 
 
         binding.ttsStartBtn.setOnClickListener {
@@ -98,7 +124,7 @@ class ExamListenRequireMeaningActivity : AppCompatActivity() {
         }
         binding.nextBtn.visibility = View.GONE
         supportActionBar?.title =
-            "단어 듣기평가 (${originWordListSize - wordList.size + 1} / ${originWordListSize})"
+            "단어 듣기평가 (${originWordListSize - vocaList.size} / ${originWordListSize})"
         binding.hitrate.text = "내 정답률: ${(currentVoca.getHitRate() * 100).toInt()}%"
 
         val meaningList = manager.getMeaningWithoutDuplicated(currentVoca.meaning)

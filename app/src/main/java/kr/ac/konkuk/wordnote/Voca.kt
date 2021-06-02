@@ -13,6 +13,7 @@ data class Voca(
 ) :
     Serializable {
     companion object {
+        val BOOK_NAME_ENTIRE = "전체"
         val ID_VOCA_HOLDER = "JUST_VOCA_HOLDER"
         fun copy(voca: Voca): Voca {
             return Voca(voca.word, voca.meaning, voca.tryCnt, voca.failCnt)

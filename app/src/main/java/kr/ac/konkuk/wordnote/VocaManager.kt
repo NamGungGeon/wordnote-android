@@ -33,13 +33,22 @@ class VocaManager private constructor(
         }
     }
 
-    private val fileName = "vocalist31345.txt"
+    private val fileName = "vocalist313245.txt"
     var vocaList: ArrayList<Voca> = ArrayList()
     var vocaBookHolder: Voca = Voca.bookHolder()
 
     init {
         //fill wordList
         loadWordList()
+    }
+
+    fun getVocaList(bookName: String): ArrayList<Voca> {
+        return if (bookName == Voca.BOOK_NAME_ENTIRE)
+            vocaList
+        else
+            ArrayList(vocaList.filter {
+                it.books.contains(bookName)
+            })
     }
 
     fun getVocaBookList(): ArrayList<String> {

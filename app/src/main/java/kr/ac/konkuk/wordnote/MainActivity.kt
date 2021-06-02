@@ -31,15 +31,16 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, ExamListenRequireMeaningActivity::class.java)
                 startActivity(intent)
             })
+            menuList.add(MaterialMenuItemRecyclerView.MaterialMenuItem(R.drawable.ic_baseline_playlist_add_check_24, "업적", "외운 단어와 시험 결과를 확인할 수 있습니다"){
+                val intent = Intent(applicationContext, MyHistoryActivity::class.java)
+                startActivity(intent)
+            })
             menuList.add(MaterialMenuItemRecyclerView.MaterialMenuItem(R.drawable.ic_baseline_book_24, "단어장 관리", "단어장을 관리합니다"){
                 val intent = Intent(applicationContext, VocaBookActivity::class.java)
                 startActivity(intent)
             })
             val adapter= MaterialMenuItemRecyclerView(menuList)
             mainMenuListView.adapter=adapter
-
-            //시험 결과 (성적표)
-            //듣기평가
         }
     }
 

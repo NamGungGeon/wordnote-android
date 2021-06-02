@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordnote">
+        <activity android:name=".MyHistoryActivity"></activity>
         <activity android:name=".AddVocaBookActivity" />
         <activity android:name=".UpdateVocaBookActivity" />
         <activity android:name=".VocaBookActivity" />

@@ -36,6 +36,11 @@ class VocaListFragment : Fragment() {
         initiaters.offer {
             val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
             val adapter = VocaRecylcerViewAdapter(vocaList)
+            adapter.onItemSelected= {voca->
+                val intent= Intent(context!!, VocaUpdateActivity::class.java)
+                intent.putExtra("voca", voca)
+                startActivity(intent)
+            }
             recyclerView.adapter = adapter
             recyclerView.isNestedScrollingEnabled = false
             recyclerView.overScrollMode = ScrollView.OVER_SCROLL_NEVER

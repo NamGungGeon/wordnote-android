@@ -123,8 +123,12 @@ class VocaAddActivity : AppCompatActivity() {
                                     "단어사전에서 검색한 단어의 뜻을 자동으로 입력합니다",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else{
-                                Toast.makeText(this@VocaAddActivity, "단어 검색에 실패했습니다", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(
+                                    this@VocaAddActivity,
+                                    "단어 검색에 실패했습니다",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
@@ -159,12 +163,29 @@ class VocaAddActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if (voca.word != "" || voca.meaning != "") {
+            androidx.appcompat.app.AlertDialog.Builder(this).setTitle("페이지 나감")
+                .setMessage("페이지를 벗어나면 입력 중이던 단어 정보가 사라집니다. 계속하시겠습니까?")
+                .setPositiveButton("예") { dialog, i ->
+                    dialog.dismiss()
+                    super.onBackPressed()
+                }
+                .setNegativeButton("아니오") { dialog, i ->
+                    dialog.dismiss()
+                }.create().show()
+            return
+        }
+        super.onBackPressed()
+    }
+
+
+    override fun onPause() {
         val bookName = intent.getStringExtra(EXTRA_KEY_BOOKNAME)
         val resultIntent = Intent()
         if (bookName != null)
             resultIntent.putExtra(VocaBookActivity.EXTRA_KEY_TAB_SELECTOR, bookName)
         setResult(Activity.RESULT_OK, resultIntent)
-        super.onBackPressed()
+        super.onPause()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

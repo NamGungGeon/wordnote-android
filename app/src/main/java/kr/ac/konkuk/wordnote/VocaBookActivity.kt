@@ -255,21 +255,16 @@ class VocaBookActivity : AppCompatActivity() {
 
             tabIterCnt++
         }
-        var tabIdx = -1
-        for (idx in 0..tabs.size) {
-            if (tabs[idx].contentDescription?.toString() == currentBookName) {
-                tabIdx = idx
-                break
-            }
-        }
-        if (tabIdx != -1) {
-            binding.booksViewPager.currentItem = tabIdx
-        }
+
         binding.booksTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.apply {
                     if (tab.contentDescription != null)
                         currentBookName = tab.contentDescription!!.toString()
+
+                    if (findTabIndex(currentBookName) != -1) {
+                        binding.booksViewPager.currentItem = findTabIndex(currentBookName)
+                    }
                 }
             }
 
@@ -316,6 +311,19 @@ class VocaBookActivity : AppCompatActivity() {
             override fun onPageScrollStateChanged(state: Int) {
             }
         })
+        if (findTabIndex(currentBookName) != -1) {
+            binding.booksViewPager.currentItem = findTabIndex(currentBookName)
+        }
+    }
+    private fun findTabIndex(bookName:String): Int{
+        var tabIdx = -1
+        for (idx in 0..tabs.size) {
+            if (tabs[idx].contentDescription?.toString() == bookName) {
+                tabIdx = idx
+                break
+            }
+        }
+        return tabIdx
     }
 
     private fun filterVocaAsBook(bookName: String, vocaList: ArrayList<Voca>): ArrayList<Voca> {

@@ -28,7 +28,9 @@ class SplashActivity : AppCompatActivity() {
             runOnUiThread {
                 if (manager.vocaList.isNotEmpty())
                     binding.apply {
-                        manager.vocaList.subList(
+                        val vocaList = ArrayList<Voca>(manager.vocaList)
+                        vocaList.shuffle()
+                        vocaList.subList(
                             0,
                             if (manager.vocaList.size > 20) 20 else manager.vocaList.size
                         ).map {

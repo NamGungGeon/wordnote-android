@@ -115,7 +115,7 @@ class VocaUpdateActivity : AppCompatActivity() {
 
     private fun removeVoca() {
         AlertDialog.Builder(this).setTitle("단어 삭제")
-            .setMessage("${originVoca.word}/${originVoca.meaning}\n위 단어를 삭제합니다. 계속하시겠습니까?\n\n")
+            .setMessage("${originVoca.word}/${originVoca.meaning}\n\n위 단어를 삭제합니다. 계속하시겠습니까?\n")
             .setPositiveButton("삭제") { dialog, i ->
                 VocaManager.useInstance(this) { manager ->
                     val iterator = manager.vocaList.iterator()

@@ -45,6 +45,10 @@ class VocaBookActivity : AppCompatActivity() {
         init()
     }
 
+    fun requireRefresh() {
+        init()
+    }
+
     private fun init() {
         mode = null
         selectedVocaLost.clear()

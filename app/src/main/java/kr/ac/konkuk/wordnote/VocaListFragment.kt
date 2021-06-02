@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
@@ -36,10 +38,40 @@ class VocaListFragment : Fragment() {
         initiaters.offer {
             val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
             val adapter = VocaRecylcerViewAdapter(vocaList)
-            adapter.onItemSelected= {voca->
-                val intent= Intent(context!!, VocaUpdateActivity::class.java)
+            adapter.onItemSelected = { voca ->
+                val intent = Intent(context!!, VocaUpdateActivity::class.java)
                 intent.putExtra("voca", voca)
                 startActivity(intent)
+            }
+            adapter.onItemLongSelected = { voca ->
+                AlertDialog.Builder(context!!).setTitle("단어 삭제")
+                    .setMessage("${voca.word}/${voca.meaning}\n\n단어를 삭제하면 해당 단어가 포함된 단어장에서도 모두 삭제됩니다. 계속하시겠습니까?\n")
+                    .setPositiveButton("삭제") { dialog, i ->
+                        VocaManager.useInstance(context!!) { manager ->
+                            val iterator = manager.vocaList.iterator()
+                            while (iterator.hasNext()) {
+                                if (iterator.next() == voca) {
+                                    iterator.remove()
+                                    break
+                                }
+                            }
+                            manager.saveWordList()
+
+                            Toast.makeText(
+                                context!!,
+                                "${voca.word}가 삭제되었습니다",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        dialog.dismiss()
+
+                        if (activity != null && activity is VocaBookActivity) {
+                            (activity as VocaBookActivity).requireRefresh()
+                        }
+                    }
+                    .setNegativeButton("닫기") { dialog, i ->
+                        dialog.dismiss()
+                    }.create().show()
             }
             recyclerView.adapter = adapter
             recyclerView.isNestedScrollingEnabled = false
@@ -57,7 +89,7 @@ class VocaListFragment : Fragment() {
         initiaters.offer {
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
             (recyclerView?.adapter as VocaRecylcerViewAdapter).apply {
-                onItemSelected= null
+                onItemSelected = null
                 setSelectMode(onUpdate)
             }
         }
@@ -70,7 +102,7 @@ class VocaListFragment : Fragment() {
                 initiaters.poll()?.run {
                     this()
                 }
-            }else{
+            } else {
                 break
             }
         }

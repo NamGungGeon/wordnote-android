@@ -17,6 +17,7 @@ class SplashActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        MyHistoryManager.useInstance(this) { manager -> }
         //init wordList
         VocaManager.useInstance(this) { manager ->
 

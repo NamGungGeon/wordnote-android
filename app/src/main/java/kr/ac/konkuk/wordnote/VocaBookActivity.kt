@@ -61,9 +61,10 @@ class VocaBookActivity : AppCompatActivity() {
             binding.customActionBtn.text = ""
             binding.customActionBtn.visibility = View.GONE
             binding.addVocaBtn.setOnClickListener {
-                if (currentBookName != BOOK_ENTIRE) {
+                if (currentBookName != BOOK_ENTIRE || manager.getVocaBookList().isEmpty()) {
                     val intent = Intent(this@VocaBookActivity, VocaAddActivity::class.java)
-                    intent.putExtra(VocaAddActivity.EXTRA_KEY_BOOKNAME, currentBookName)
+                    if (currentBookName != BOOK_ENTIRE)
+                        intent.putExtra(VocaAddActivity.EXTRA_KEY_BOOKNAME, currentBookName)
                     startActivityForResult(intent, 0)
                     return@setOnClickListener
                 }
@@ -315,7 +316,8 @@ class VocaBookActivity : AppCompatActivity() {
             binding.booksViewPager.currentItem = findTabIndex(currentBookName)
         }
     }
-    private fun findTabIndex(bookName:String): Int{
+
+    private fun findTabIndex(bookName: String): Int {
         var tabIdx = -1
         for (idx in 0..tabs.size) {
             if (tabs[idx].contentDescription?.toString() == bookName) {

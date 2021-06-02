@@ -9,8 +9,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <LinearLayout
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:src="@drawable/ic_baseline_search_24"
+                android:padding="4dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                style="@style/button_icon"/>
+            <EditText
+                android:id="@+id/voca_search_input"
+                android:hint="검색할 단어를 여기에 입력하세요"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/vocaCnt"
+            android:layout_margin="8dp"
             android:textAlignment="textEnd"
             style="@style/text_explain"
             android:layout_width="match_parent"

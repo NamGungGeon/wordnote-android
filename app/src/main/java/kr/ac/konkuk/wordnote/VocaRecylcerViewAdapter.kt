@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class VocaRecylcerViewAdapter(
-    private val values: List<Voca>
+    var values: List<Voca>
 ) : RecyclerView.Adapter<VocaRecylcerViewAdapter.ViewHolder>() {
     companion object {
         val MODE_CHECK = "MODE_CHECK"

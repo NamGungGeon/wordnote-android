@@ -123,6 +123,8 @@ class VocaAddActivity : AppCompatActivity() {
                                     "단어사전에서 검색한 단어의 뜻을 자동으로 입력합니다",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                            }else{
+                                Toast.makeText(this@VocaAddActivity, "단어 검색에 실패했습니다", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

@@ -32,14 +32,29 @@
                     android:text="새로운 단어"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <EditText
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:lines="1"
-                    android:id="@+id/wordInput"
-                    android:hint="apple"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <EditText
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:lines="1"
+                        android:id="@+id/wordInput"
+                        android:hint="apple"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"/>
+                    <ImageButton
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_search_24"
+                        android:id="@+id/searchBtn"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_margin="0dp"
+                        style="@style/button_icon"/>
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="32dp"/>
@@ -57,12 +72,6 @@
                     android:hint="사과"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <Button
-                    android:layout_gravity="right"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/searchBtn"
-                    style="@style/button"
-                    android:text="단어 뜻 검색"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

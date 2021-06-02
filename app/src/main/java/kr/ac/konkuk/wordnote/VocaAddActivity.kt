@@ -1,6 +1,7 @@
 package kr.ac.konkuk.wordnote
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -69,6 +70,34 @@ class VocaAddActivity : AppCompatActivity() {
             val dummyVoca = Voca("New Word", "단어 뜻", 0, 0)
             wordInput.setText("")
             wordInput.hint = dummyVoca.word
+            wordInput.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    //find already existed voca
+                    VocaManager.useInstance(this@VocaAddActivity) { manager ->
+                        var target: Voca? = null
+                        manager.vocaList.map { v ->
+                            if (v.word == voca.word) {
+                                target = v
+                            }
+                        }
+                        //duplicated voca is exist
+                        if (target != null) {
+                            AlertDialog.Builder(this@VocaAddActivity)
+                                .setTitle("${voca.word}가 이미 등록되어 있습니다")
+                                .setMessage("등록된 단어를 수정하시겠습니까?")
+                                .setPositiveButton("예") { dialog, i ->
+                                    val intent =
+                                        Intent(this@VocaAddActivity, VocaUpdateActivity::class.java)
+                                    intent.putExtra("voca", target)
+                                    startActivityForResult(intent, 1)
+                                    dialog.dismiss()
+                                }.setNegativeButton("무시") { dialog, i ->
+                                    dialog.dismiss()
+                                }.create().show()
+                        }
+                    }
+                }
+            }
             meaningInput.setText("")
             meaningInput.hint = dummyVoca.meaning
 
@@ -134,5 +163,12 @@ class VocaAddActivity : AppCompatActivity() {
             resultIntent.putExtra(VocaBookActivity.EXTRA_KEY_TAB_SELECTOR, bookName)
         setResult(Activity.RESULT_OK, resultIntent)
         super.onBackPressed()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK)
+            finish()
     }
 }

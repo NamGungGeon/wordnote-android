@@ -1,5 +1,6 @@
 package kr.ac.konkuk.wordnote
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import kr.ac.konkuk.wordnote.databinding.ActivityUpdateVocaBinding
 
 class VocaUpdateActivity : AppCompatActivity() {
+    companion object {
+        val EXTRA_KEY_MODE = "MODE"
+        val EXTRA_VALUE_MODE_ONLY_ONCE = "ONLY_ONCE"
+    }
+
     lateinit var binding: ActivityUpdateVocaBinding
     lateinit var vocaFragment: VocaFragment
 
@@ -107,6 +113,7 @@ class VocaUpdateActivity : AppCompatActivity() {
                 "변경되었습니다",
                 Toast.LENGTH_SHORT
             ).show()
+            setResult(Activity.RESULT_OK)
             finish()
         }
 

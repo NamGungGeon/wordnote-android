@@ -4,6 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +25,8 @@ class VocaBookActivity : AppCompatActivity() {
     val fragments = ArrayList<VocaListFragment>()
 
     private var currentBookName: String = BOOK_ENTIRE
+    private var mode: String? = null
+    private val selectedVocaLost = ArrayList<Voca>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +34,131 @@ class VocaBookActivity : AppCompatActivity() {
         binding = ActivityVocaBookBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.title = "단어장 관리"
+    }
 
-        binding.addVocaBtn.setOnClickListener {
-            val intent = Intent(this, VocaAddActivity::class.java)
-            if (currentBookName != BOOK_ENTIRE) {
-                intent.putExtra(VocaAddActivity.EXTRA_KEY_BOOKNAME, currentBookName)
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
+
+    private fun init() {
+        mode = null
+        selectedVocaLost.clear()
+        binding.booksTabLayout.visibility = View.VISIBLE
+
+        VocaManager.useInstance(this) { manager ->
+            initTabs(manager.getVocaBookList())
+
+            binding.addVocaBtn.text = "단어 추가"
+            binding.customActionBtn.text = ""
+            binding.customActionBtn.visibility = View.GONE
+            binding.addVocaBtn.setOnClickListener {
+                if (mode != VocaRecylcerViewAdapter.MODE_CHECK) {
+                    mode = VocaRecylcerViewAdapter.MODE_CHECK
+                    val entireBookFragment = fragments[0]
+                    tabs[0].select()
+                    binding.booksTabLayout.visibility = View.GONE
+                    binding.booksViewPager.adapter = object : FragmentStatePagerAdapter(
+                        supportFragmentManager,
+                        FragmentStatePagerAdapter.POSITION_NONE
+                    ) {
+                        override fun getCount(): Int {
+                            return 1
+                        }
+
+                        override fun getItem(position: Int): Fragment {
+                            VocaManager.useInstance(this@VocaBookActivity) { manager ->
+                                entireBookFragment.setVocaList(manager.vocaList)
+                                entireBookFragment.startListeningSelectedVoca {
+                                    selectedVocaLost.clear()
+                                    selectedVocaLost.addAll(it)
+                                }
+                            }
+                            return entireBookFragment
+                        }
+                    }
+
+
+                    binding.addVocaBtn.text = "다른 단어장에 추가"
+
+                    binding.customActionBtn.visibility = View.VISIBLE
+                    binding.customActionBtn.text = "새 단어 추가"
+                    binding.customActionBtn.setOnClickListener {
+                        val openVocaAddActivity= {
+                            val intent = Intent(this, VocaAddActivity::class.java)
+                            if (currentBookName != BOOK_ENTIRE) {
+                                intent.putExtra(VocaAddActivity.EXTRA_KEY_BOOKNAME, currentBookName)
+                            }
+                            startActivity(intent)
+                        }
+                        if(selectedVocaLost.isNotEmpty()){
+                            AlertDialog.Builder(this)
+                                .setTitle("페이지 이동")
+                                .setMessage("선택한 단어가 있습니다\n\n페이지를 벗어나면 선택된 단어 정보가 사라집니다. 계속하시겠습니까?")
+                                .setPositiveButton("이동"){dialog, i->
+                                    openVocaAddActivity()
+                                    dialog.dismiss()
+                                }.setNegativeButton("취소"){dialog, i->
+                                    dialog.dismiss()
+                                }.create().show()
+                        }else{
+                            openVocaAddActivity()
+                        }
+
+                    }
+
+                    return@setOnClickListener
+                } else {
+                    //actually add action
+                    if (selectedVocaLost.isEmpty()) {
+                        Toast.makeText(this, "선택한 단어가 없습니다", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    val dialogView =
+                        layoutInflater.inflate(R.layout.dialog_select_book_name, null, false)
+
+                    val msgView: TextView = dialogView.findViewById(R.id.msg)
+                    msgView.text =
+                        "선택한 ${selectedVocaLost.size}개의 단어를 다음의 단어장에 추가합니다\n해당 단어장에 이미 존재하는 중복된 단어는 제외됩니다"
+
+                    val msg2View: TextView = dialogView.findViewById(R.id.msg2)
+                    var msg2 = "== 선택한 단어 리스트 == \n"
+                    selectedVocaLost.map { voca ->
+                        msg2 += voca.word + "\n"
+                    }
+                    msg2View.text = msg2
+
+                    val spinner: Spinner = dialogView.findViewById(R.id.bookNameSpinner)
+                    VocaManager.useInstance(this) { manager ->
+                        spinner.adapter = ArrayAdapter(
+                            this,
+                            android.R.layout.simple_dropdown_item_1line,
+                            manager.getVocaBookList()
+                        )
+
+                        AlertDialog.Builder(this)
+                            .setTitle("다른 단어장에 추가")
+                            .setView(dialogView)
+                            .setPositiveButton("이동") { dialog, i ->
+                                val selectedBook = spinner.selectedItem as String
+                                selectedVocaLost.map { voca ->
+                                    if (!voca.books.contains(selectedBook))
+                                        voca.books.add(selectedBook)
+                                }
+                                manager.saveWordList()
+                                init()
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton("닫기") { dialog, i ->
+                                dialog.dismiss()
+                            }
+                            .create().show()
+                    }
+                }
             }
-
-            startActivity(intent)
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_book, menu)
@@ -73,9 +194,9 @@ class VocaBookActivity : AppCompatActivity() {
                     .setTitle("단어장(${currentBookName}) 삭제")
                     .setMessage("해당 단어장을 삭제합니다\n단어장에 등록된 단어들은 이 단어장과 연결이 해제됩니다")
                     .setPositiveButton("삭제") { dialog, i ->
-                        VocaManager.useInstance(this){manager->
+                        VocaManager.useInstance(this) { manager ->
                             manager.removeBook(currentBookName)
-                            currentBookName= BOOK_ENTIRE
+                            currentBookName = BOOK_ENTIRE
                             Toast.makeText(this, "삭제되었습니다", Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
 
@@ -91,14 +212,6 @@ class VocaBookActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        VocaManager.useInstance(this) { manager ->
-            initTabs(manager.getVocaBookList())
-        }
     }
 
     private fun initTabs(books: ArrayList<String>) {
@@ -151,6 +264,7 @@ class VocaBookActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
         binding.booksViewPager.adapter = object : FragmentStatePagerAdapter(
             supportFragmentManager,
             FragmentStatePagerAdapter.POSITION_NONE
@@ -172,8 +286,6 @@ class VocaBookActivity : AppCompatActivity() {
                 return fragments[position]
             }
         }
-        binding.booksViewPager.offscreenPageLimit = 0
-        binding.booksViewPager.clearOnPageChangeListeners()
         binding.booksViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
@@ -198,5 +310,25 @@ class VocaBookActivity : AppCompatActivity() {
         return ArrayList(vocaList.filter {
             it.books.contains(bookName)
         }.toList())
+    }
+
+    override fun onBackPressed() {
+        if (mode != null) {
+            if(selectedVocaLost.isNotEmpty()){
+                AlertDialog.Builder(this)
+                    .setTitle("단어 선택 모드 종료")
+                    .setMessage("${selectedVocaLost.size}개의 선택한 단어가 있습니다\n\n저장하지 않고 돌아가시겠습니까?")
+                    .setPositiveButton("종료"){dialog, i->
+                        init()
+                        dialog.dismiss()
+                    }.setNegativeButton("취소"){dialog, i->
+                        dialog.dismiss()
+                    }.create().show()
+                return
+            }
+            init()
+            return
+        }
+        super.onBackPressed()
     }
 }

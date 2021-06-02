@@ -5,6 +5,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">16dp</item>
     </style>
+    <style name="button_secondary">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:textColor">@color/black_like</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
     <style name="text_explain">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

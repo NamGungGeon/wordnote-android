@@ -12,6 +12,10 @@
         android:padding="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/voca_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="0dp"

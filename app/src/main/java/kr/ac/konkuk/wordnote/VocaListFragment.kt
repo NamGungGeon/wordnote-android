@@ -9,10 +9,13 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
+import kotlin.collections.ArrayList
 
 class VocaListFragment : Fragment() {
 
-    private var waitInit: (() -> Unit)? = null
+    private var initiaters: Queue<(() -> Unit)> = LinkedList()
+    var vocaList: ArrayList<Voca> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,35 +32,42 @@ class VocaListFragment : Fragment() {
     }
 
     fun setVocaList(vocaList: ArrayList<Voca>): VocaListFragment {
-        waitInit = {
+        this.vocaList = vocaList
+        initiaters.offer {
             val recyclerView = view!!.findViewById<RecyclerView>(R.id.recyclerView)
             val adapter = VocaRecylcerViewAdapter(vocaList)
-            adapter.onItemSelected = {
-                //update
-                val intent =
-                    Intent(activity, VocaUpdateActivity::class.java)
-                intent.putExtra("voca", it)
-                startActivity(intent)
-            }
-
             recyclerView.adapter = adapter
             recyclerView.isNestedScrollingEnabled = false
             recyclerView.overScrollMode = ScrollView.OVER_SCROLL_NEVER
 
-            val vocaCnt= view!!.findViewById<TextView>(R.id.vocaCnt)
-            vocaCnt.text= "단어가 ${vocaList.size}개 있습니다"
+            val vocaCnt = view!!.findViewById<TextView>(R.id.vocaCnt)
+            vocaCnt.text = "단어가 ${vocaList.size}개 있습니다"
         }
 
         consumeInitiater()
         return this
     }
 
-    private fun consumeInitiater() {
-        if (view != null && waitInit != null) {
-            waitInit!!.run {
-                this()
+    fun startListeningSelectedVoca(onUpdate: ((ArrayList<Voca>) -> Unit)) {
+        initiaters.offer {
+            val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
+            (recyclerView?.adapter as VocaRecylcerViewAdapter).apply {
+                onItemSelected= null
+                setSelectMode(onUpdate)
             }
-            waitInit = null
+        }
+        consumeInitiater()
+    }
+
+    private fun consumeInitiater() {
+        while (initiaters.isNotEmpty()) {
+            if (view != null) {
+                initiaters.poll()?.run {
+                    this()
+                }
+            }else{
+                break
+            }
         }
     }
 }

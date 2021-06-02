@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="32dp">
+    <TextView
+        style="@style/text_explain"
+        android:layout_margin="0dp"
+        android:id="@+id/msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="test"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_weight="1"
+            android:text="이동할 단어장 선택"
+            android:layout_margin="0dp"
+            style="@style/text_explain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:layout_weight="1"
+            android:id="@+id/bookNameSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
+    <TextView
+        style="@style/text_explain"
+        android:layout_margin="0dp"
+        android:id="@+id/msg2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="test"/>
+</LinearLayout>

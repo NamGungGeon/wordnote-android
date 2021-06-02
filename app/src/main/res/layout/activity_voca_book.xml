@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".VocaBookActivity">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <com.google.android.material.tabs.TabLayout
-            android:layout_gravity="left"
-            app:tabMode="scrollable"
-            app:tabTextColor="@color/gray"
-            app:tabSelectedTextColor="@color/black_like"
             android:id="@+id/booksTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/black_like"
+            app:tabTextColor="@color/gray" />
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/booksViewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
-    <Button
-        android:id="@+id/addVocaBtn"
-        android:drawableStart="@drawable/ic_baseline_add_24"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="단어 추가"
-        style="@style/button"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addVocaBtn"
+            style="@style/button"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_baseline_add_24"
+            android:text="단어 추가" />
+
+        <Button
+            android:id="@+id/customActionBtn"
+            style="@style/button_secondary"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_baseline_add_24"
+            android:text="단어 추가" />
+    </LinearLayout>
 </RelativeLayout>

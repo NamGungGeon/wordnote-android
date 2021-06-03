@@ -2,6 +2,8 @@ package kr.ac.konkuk.wordnote
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             val childView =
                 layoutInflater.inflate(R.layout.dialog_target_voca_selector, null, false)
             val bookNameSpinner = childView.findViewById<Spinner>(R.id.bookNameSpinner)
-            val bookList= ArrayList<String>()
+            val bookList = ArrayList<String>()
             bookList.add(Voca.BOOK_NAME_ENTIRE)
             bookList.addAll(manager.getVocaBookList())
             bookNameSpinner.adapter = ArrayAdapter(
@@ -126,9 +128,30 @@ class MainActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }.create().show()
         }
-
-
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_dev_info -> {
+                AlertDialog.Builder(this)
+                    .setTitle("정보")
+                    .setMessage("201611259 컴퓨터공학과 남궁건")
+                    .setPositiveButton("닫기") { dialog, i ->
+                        dialog.dismiss()
+                    }.create().show()
+                return true
+            }
+        }
+
+
+
+        return super.onOptionsItemSelected(item)
+    }
+
 
     private var lastBackBtnPressed: Long = 0
     override fun onBackPressed() {

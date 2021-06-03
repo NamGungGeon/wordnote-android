@@ -177,7 +177,7 @@ class VocaBookActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_book, menu)
-        Toast.makeText(this, "메뉴를 추가하려면 우측 상단 추가 버튼을 누르세요", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "단어장을 추가하려면 우측 상단 추가 버튼을 누르세요", Toast.LENGTH_SHORT).show()
         return true
     }
 

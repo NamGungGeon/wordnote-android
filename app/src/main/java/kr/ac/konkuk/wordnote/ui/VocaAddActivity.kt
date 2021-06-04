@@ -105,6 +105,20 @@ class VocaAddActivity : AppCompatActivity() {
                                 }.setNegativeButton("무시") { dialog, i ->
                                     dialog.dismiss()
                                 }.create().show()
+                        }else{
+                            Thread{
+                                voca.loadMeaningFromDict {
+                                    runOnUiThread{
+                                        if(it){
+                                            if(meaningInput.text.toString() == ""){
+                                                meaningInput.setText(voca.meaning)
+                                            }else{
+                                                voca.meaning= meaningInput.text.toString()
+                                            }
+                                        }
+                                    }
+                                }
+                            }.start()
                         }
                     }
                 }
@@ -155,6 +169,29 @@ class VocaAddActivity : AppCompatActivity() {
         }
 
         VocaManager.useInstance(this) { manager ->
+            var target: Voca? = null
+            manager.vocaList.map { v ->
+                if (v.word == voca.word) {
+                    target = v
+                }
+            }
+            //duplicated voca is exist
+            if (target != null) {
+                AlertDialog.Builder(this@VocaAddActivity)
+                    .setTitle("${voca.word}가 이미 등록되어 있습니다")
+                    .setMessage("등록된 단어를 수정하시겠습니까?")
+                    .setPositiveButton("예") { dialog, i ->
+                        val intent =
+                            Intent(this@VocaAddActivity, VocaUpdateActivity::class.java)
+                        intent.putExtra("voca", target)
+                        startActivityForResult(intent, 1)
+                        dialog.dismiss()
+                    }.setNegativeButton("무시") { dialog, i ->
+                        dialog.dismiss()
+                    }.create().show()
+                return@useInstance
+            }
+
             val bookName = intent.getStringExtra(EXTRA_KEY_BOOKNAME)
             if (bookName != null)
                 voca.books.add(bookName)

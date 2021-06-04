@@ -322,7 +322,7 @@ class VocaBookActivity : AppCompatActivity() {
 
     private fun findTabIndex(bookName: String): Int {
         var tabIdx = -1
-        for (idx in 0..tabs.size) {
+        for (idx in 0 until tabs.size) {
             if (tabs[idx].contentDescription?.toString() == bookName) {
                 tabIdx = idx
                 break

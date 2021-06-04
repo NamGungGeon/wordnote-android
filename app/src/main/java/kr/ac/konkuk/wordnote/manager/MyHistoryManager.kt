@@ -28,7 +28,7 @@ class MyHistoryManager private constructor(val context: Context) {
         }
     }
 
-    private val fileName = "myHistories.txt"
+    private val fileName = "myHistories2.txt"
     var historyList = ArrayList<MyHistory>()
 
     init {

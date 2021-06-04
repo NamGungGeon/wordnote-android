@@ -35,7 +35,7 @@ class VocaManager private constructor(
         }
     }
 
-    private val fileName = "vocalist313245.txt"
+    private val fileName = "vocalist3213245.txt"
     var vocaList: ArrayList<Voca> = ArrayList()
     var vocaBookHolder: Voca = Voca.bookHolder()
 

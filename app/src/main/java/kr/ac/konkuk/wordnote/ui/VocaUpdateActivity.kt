@@ -1,12 +1,14 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
-import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import kr.ac.konkuk.wordnote.R
+import kr.ac.konkuk.wordnote.bean.Voca
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import kr.ac.konkuk.wordnote.databinding.ActivityUpdateVocaBinding
 
 class VocaUpdateActivity : AppCompatActivity() {
@@ -113,7 +115,7 @@ class VocaUpdateActivity : AppCompatActivity() {
                 "변경되었습니다",
                 Toast.LENGTH_SHORT
             ).show()
-            setResult(Activity.RESULT_OK)
+            setResult(RESULT_OK)
             finish()
         }
 

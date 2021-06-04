@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import kr.ac.konkuk.wordnote.R
+import kr.ac.konkuk.wordnote.bean.Voca
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import java.util.*
 import kotlin.collections.ArrayList
 

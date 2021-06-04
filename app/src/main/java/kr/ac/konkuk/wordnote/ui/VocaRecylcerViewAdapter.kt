@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kr.ac.konkuk.wordnote.R
+import kr.ac.konkuk.wordnote.bean.Voca
 
 class VocaRecylcerViewAdapter(
     var values: List<Voca>

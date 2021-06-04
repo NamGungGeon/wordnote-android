@@ -1,8 +1,9 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import kr.ac.konkuk.wordnote.bean.MyHistory
 
 import kr.ac.konkuk.wordnote.databinding.ListMyHistoryBinding
 

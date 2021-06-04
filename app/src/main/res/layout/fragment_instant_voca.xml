@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".InstantVocaFragment">
+    tools:context=".ui.InstantVocaFragment">
     <fragment
         android:id="@+id/voca_fragment"
-        android:name="kr.ac.konkuk.wordnote.VocaFragment"
+        android:name="kr.ac.konkuk.wordnote.ui.VocaFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_voca" />

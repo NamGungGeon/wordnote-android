@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import kr.ac.konkuk.wordnote.R
+import kr.ac.konkuk.wordnote.bean.Voca
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import kr.ac.konkuk.wordnote.databinding.ActivityVocaBookBinding
 
 class VocaBookActivity : AppCompatActivity() {
@@ -76,7 +79,7 @@ class VocaBookActivity : AppCompatActivity() {
                     binding.booksTabLayout.visibility = View.GONE
                     binding.booksViewPager.adapter = object : FragmentStatePagerAdapter(
                         supportFragmentManager,
-                        FragmentStatePagerAdapter.POSITION_NONE
+                        POSITION_NONE
                     ) {
                         override fun getCount(): Int {
                             return 1

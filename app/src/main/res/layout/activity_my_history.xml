@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyHistoryActivity">
+    tools:context=".ui.MyHistoryActivity">
 
     <fragment
         android:id="@+id/my_history_list_fragment"
-        android:name="kr.ac.konkuk.wordnote.MyHistoryFragment"
+        android:name="kr.ac.konkuk.wordnote.ui.MyHistoryFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_my_history" />

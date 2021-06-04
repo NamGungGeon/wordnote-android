@@ -1,10 +1,11 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import kr.ac.konkuk.wordnote.databinding.ActivityVocaListBinding
 
 class VocaListActivity : AppCompatActivity() {

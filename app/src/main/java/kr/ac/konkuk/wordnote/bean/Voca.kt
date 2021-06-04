@@ -1,6 +1,7 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.bean
 
 import androidx.annotation.WorkerThread
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import org.jsoup.Jsoup
 import java.io.Serializable
 

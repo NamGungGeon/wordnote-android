@@ -1,7 +1,9 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.manager
 
 import android.content.Context
 import android.util.Log
+import kr.ac.konkuk.wordnote.R
+import kr.ac.konkuk.wordnote.bean.Voca
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream

@@ -1,7 +1,6 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kr.ac.konkuk.wordnote.R
 
 class MaterialMenuItemRecyclerView(
     private val values: List<MaterialMenuItem>

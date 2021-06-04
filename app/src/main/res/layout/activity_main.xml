@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,7 +18,7 @@
                 android:layout_marginTop="16dp"
                 tools:layout="@layout/fragment_instant_voca"
                 android:id="@+id/instance_voca_1"
-                android:name="kr.ac.konkuk.wordnote.InstantVocaFragment"
+                android:name="kr.ac.konkuk.wordnote.ui.InstantVocaFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <androidx.recyclerview.widget.RecyclerView

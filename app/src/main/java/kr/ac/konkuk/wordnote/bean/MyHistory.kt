@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.bean
 
 import java.io.Serializable
 import java.lang.Exception

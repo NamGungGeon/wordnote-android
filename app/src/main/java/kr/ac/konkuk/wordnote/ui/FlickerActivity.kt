@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -6,6 +6,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import kr.ac.konkuk.wordnote.bean.MyHistory
+import kr.ac.konkuk.wordnote.manager.MyHistoryManager
+import kr.ac.konkuk.wordnote.bean.Voca
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import kr.ac.konkuk.wordnote.databinding.ActivityFlickerBinding
 import java.util.*
 import kotlin.collections.ArrayList

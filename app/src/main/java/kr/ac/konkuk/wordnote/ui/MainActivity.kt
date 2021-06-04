@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,9 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import kr.ac.konkuk.wordnote.R
+import kr.ac.konkuk.wordnote.bean.Voca
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import kr.ac.konkuk.wordnote.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

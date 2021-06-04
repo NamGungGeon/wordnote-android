@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".VocaAddActivity">
+    tools:context=".ui.VocaAddActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
 
             <fragment
                 android:id="@+id/preview_voca"
-                android:name="kr.ac.konkuk.wordnote.VocaFragment"
+                android:name="kr.ac.konkuk.wordnote.ui.VocaFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"

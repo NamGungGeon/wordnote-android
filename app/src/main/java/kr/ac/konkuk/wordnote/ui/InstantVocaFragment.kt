@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import kr.ac.konkuk.wordnote.bean.MyHistory
+import kr.ac.konkuk.wordnote.manager.MyHistoryManager
+import kr.ac.konkuk.wordnote.R
+import kr.ac.konkuk.wordnote.manager.VocaManager
 
 class InstantVocaFragment : Fragment() {
     override fun onCreateView(

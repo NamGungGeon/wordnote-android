@@ -1,8 +1,10 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import kr.ac.konkuk.wordnote.manager.MyHistoryManager
+import kr.ac.konkuk.wordnote.R
 import kr.ac.konkuk.wordnote.databinding.ActivityMyHistoryBinding
 
 class MyHistoryActivity : AppCompatActivity() {

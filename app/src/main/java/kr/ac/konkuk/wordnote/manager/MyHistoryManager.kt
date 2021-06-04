@@ -1,11 +1,11 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.manager
 
 import android.content.Context
 import android.os.Looper
+import kr.ac.konkuk.wordnote.bean.MyHistory
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.io.OutputStream
 import java.lang.Exception
 
 class MyHistoryManager private constructor(val context: Context) {

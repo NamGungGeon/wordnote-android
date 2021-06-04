@@ -1,4 +1,4 @@
-package kr.ac.konkuk.wordnote
+package kr.ac.konkuk.wordnote.ui
 
 import android.content.Intent
 import android.graphics.Color
@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.text.TextPaint
 import androidx.appcompat.app.AppCompatActivity
 import com.magicgoop.tagsphere.item.TextTagItem
+import kr.ac.konkuk.wordnote.manager.MyHistoryManager
+import kr.ac.konkuk.wordnote.bean.Voca
+import kr.ac.konkuk.wordnote.manager.VocaManager
 import kr.ac.konkuk.wordnote.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {

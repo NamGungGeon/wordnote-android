@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".InstanceVocaFragment">
+    tools:context=".InstantVocaFragment">
     <fragment
         android:id="@+id/voca_fragment"
         android:name="kr.ac.konkuk.wordnote.VocaFragment"

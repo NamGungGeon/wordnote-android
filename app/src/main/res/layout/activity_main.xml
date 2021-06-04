@@ -16,9 +16,9 @@
             android:orientation="vertical">
             <fragment
                 android:layout_marginTop="16dp"
-                tools:layout="@layout/fragment_instance_voca"
+                tools:layout="@layout/fragment_instant_voca"
                 android:id="@+id/instance_voca_1"
-                android:name="kr.ac.konkuk.wordnote.InstanceVocaFragment"
+                android:name="kr.ac.konkuk.wordnote.InstantVocaFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <androidx.recyclerview.widget.RecyclerView
